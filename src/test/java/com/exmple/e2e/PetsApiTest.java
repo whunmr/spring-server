@@ -4,16 +4,16 @@ import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import static com.exmple.e2e.TestUtil.propertyOr;
+import static com.exmple.e2e.TestUtil.propertyValue;
 import static io.restassured.RestAssured.given;
 
 public class PetsApiTest {
 
     @BeforeAll
     public static void setup() {
-        RestAssured.baseURI  = propertyOr("server.host", "http://localhost");
-        RestAssured.port     = propertyOr("server.port", 9001);
-        RestAssured.basePath = propertyOr("server.base", "/");
+        RestAssured.baseURI  = propertyValue("server.host", "http://localhost");
+        RestAssured.port     = propertyValue("server.port", 9001);
+        RestAssured.basePath = propertyValue("server.base", "/");
     }
 
     @Test
@@ -30,5 +30,4 @@ public class PetsApiTest {
                 .then().statusCode(200);
     }
 
-    
 }
