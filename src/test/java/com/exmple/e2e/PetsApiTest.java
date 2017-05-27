@@ -45,8 +45,7 @@ public class PetsApiTest {
     public void test__getPets_api__can__return_default_pets___by_json_deserialization() throws IOException {
         String json = get("/pets").asString();
 
-        ObjectMapper mapper = new ObjectMapper();
-        Pet[] pets = mapper.readValue(json, Pet[].class);
+        Pet[] pets = new ObjectMapper().readValue(json, Pet[].class);
 
         assertThat(pets.length, is(1));
         assertThat(pets[0].getName(), is("foo"));
