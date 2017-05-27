@@ -3,12 +3,10 @@ package com.exmple.e2e;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.RestAssured;
 import io.swagger.model.Pet;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.io.IOException;
-
 import static com.exmple.e2e.TestUtil.propertyValue;
 import static io.restassured.RestAssured.get;
 import static io.restassured.RestAssured.given;
@@ -18,15 +16,14 @@ import static org.hamcrest.Matchers.is;
 
 public class PetsApiTest {
 
-    @BeforeAll
-    public static void setup() {
+    @Before
+    public void setup() {
         RestAssured.baseURI  = propertyValue("server.host", "http://localhost");
         RestAssured.port     = propertyValue("server.port", 9001);
         RestAssured.basePath = propertyValue("server.base", "/");
     }
 
     @Test
-    @Tag("happy_path")
     public void test__pet_website__is_running_ok() {
         given()
                 .when().get("/")
@@ -50,5 +47,4 @@ public class PetsApiTest {
         assertThat(pets.length, is(1));
         assertThat(pets[0].getName(), is("foo"));
     }
-
 }
