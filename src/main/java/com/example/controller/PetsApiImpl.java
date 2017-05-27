@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Configuration
-public class PetsApiDelegateImpl implements PetsApiDelegate {
+public class PetsApiImpl implements PetsApiDelegate {
 
     @Override
     public ResponseEntity<Pet> addPet(Pet pet) {

@@ -1,12 +1,34 @@
 package com.exmple.e2e;
 
+import io.restassured.RestAssured;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import static com.exmple.e2e.TestUtil.propertyOr;
 import static io.restassured.RestAssured.given;
 
 public class PetsApiTest {
-    @Test
-    public void test__website__is_running_ok() {
-        given().when().get("http://localhost:9001").then().statusCode(200);
+
+    @BeforeAll
+    public static void setup() {
+        RestAssured.baseURI  = propertyOr("server.host", "http://localhost");
+        RestAssured.port     = propertyOr("server.port", 9001);
+        RestAssured.basePath = propertyOr("server.base", "/");
     }
+
+    @Test
+    public void test__pet_website__is_running_ok() {
+        given()
+                .when().get("/")
+                .then().statusCode(200);
+    }
+
+    @Test
+    public void test__getPets_api__can__return_default_pets() {
+        given()
+                .when().get("/pets")
+                .then().statusCode(200);
+    }
+
+    
 }
