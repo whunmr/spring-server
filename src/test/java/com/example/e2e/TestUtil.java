@@ -1,4 +1,4 @@
-package com.exmple.e2e;
+package com.example.e2e;
 
 public class TestUtil {
 

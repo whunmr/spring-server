@@ -1,4 +1,4 @@
-package com.exmple.e2e;
+package com.example.e2e;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.RestAssured;
@@ -7,7 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
-import static com.exmple.e2e.TestUtil.propertyValue;
+import static com.example.e2e.TestUtil.propertyValue;
 import static io.restassured.RestAssured.get;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.MatcherAssert.assertThat;

@@ -1,6 +1,6 @@
 /Users/hmwang/lab/java/spring-server/src/main/java/io/swagger/RFC3339DateFormat.java
 /Users/hmwang/lab/java/spring-server/src/main/java/com/example/Swagger2SpringBoot.java
-/Users/hmwang/lab/java/spring-server/src/main/java/com/example/controller/PetsApiDelegateImpl.java
+/Users/hmwang/lab/java/spring-server/src/main/java/com/example/controller/PetsApiImpl.java
 /Users/hmwang/lab/java/spring-server/src/main/java/io/swagger/api/PetsApiDelegate.java
 /Users/hmwang/lab/java/spring-server/src/main/java/io/swagger/model/Pet.java
 /Users/hmwang/lab/java/spring-server/src/main/java/io/swagger/api/PetsApiController.java
