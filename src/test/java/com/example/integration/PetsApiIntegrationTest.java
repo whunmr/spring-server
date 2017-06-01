@@ -1,8 +1,7 @@
 package com.example.integration;
 
 
-import com.example.Swagger2SpringBoot;
-import com.example.controller.PetsApiImpl;
+import com.tw.dddsample.Application;
 import io.swagger.model.Pet;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,13 +12,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.util.Map;
-
 import static org.junit.Assert.assertEquals;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.DEFINED_PORT;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(webEnvironment = DEFINED_PORT, classes={Swagger2SpringBoot.class})
+@SpringBootTest(webEnvironment = DEFINED_PORT, classes={Application.class})
 public class PetsApiIntegrationTest {
 
     @Autowired

@@ -4,6 +4,7 @@ import io.swagger.api.PetsApiDelegate;
 import io.swagger.model.Pet;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 
 import javax.validation.Validation;
 import java.util.ArrayList;
