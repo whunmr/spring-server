@@ -1,0 +1,23 @@
+server:
+  port: 9001
+
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://127.0.0.1:8761/eureka/
+
+
+spring:
+  jackson:
+    date-format: io.swagger.RFC3339DateFormat
+    serialization:
+      WRITE_DATES_AS_TIMESTAMPS: false
+
+
+springfox:
+  documentation:
+    swagger:
+      v2:
+        path: /api-docs
+

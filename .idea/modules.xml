@@ -3,11 +3,11 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/bookmark-service/bookmark-service.iml" filepath="$PROJECT_DIR$/bookmark-service/bookmark-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ec2/ec2.iml" filepath="$PROJECT_DIR$/ec2/ec2.iml" />
       <module fileurl="file://$PROJECT_DIR$/eureka-service/eureka-service.iml" filepath="$PROJECT_DIR$/eureka-service/eureka-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/passport-service/passport-service.iml" filepath="$PROJECT_DIR$/passport-service/passport-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/photo-service/photo-service.iml" filepath="$PROJECT_DIR$/photo-service/photo-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/service-registration-and-discovery.iml" filepath="$PROJECT_DIR$/service-registration-and-discovery.iml" />
-      <module fileurl="file://$PROJECT_DIR$/ec2/swagger-demo.iml" filepath="$PROJECT_DIR$/ec2/swagger-demo.iml" />
     </modules>
   </component>
 </project>
