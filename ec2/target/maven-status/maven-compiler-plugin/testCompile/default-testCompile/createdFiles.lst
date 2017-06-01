@@ -1,1 +1,3 @@
-com/exmple/e2e/PetsApiTest.class
+com/example/e2e/PetsApiTest.class
+com/example/integration/PetsApiIntegrationTest.class
+com/example/e2e/TestUtil.class

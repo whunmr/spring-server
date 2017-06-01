@@ -6,10 +6,19 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="bookmark-service" />
+        <module name="eureka-service" />
+        <module name="passport-service" />
+        <module name="photo-service" />
         <module name="swagger-demo" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="bookmark-service" target="1.8" />
+      <module name="eureka-service" target="1.8" />
+      <module name="passport-service" target="1.8" />
+      <module name="photo-service" target="1.8" />
+      <module name="service-registration-and-discovery" target="1.8" />
       <module name="swagger-demo" target="1.8" />
     </bytecodeTargetLevel>
   </component>
