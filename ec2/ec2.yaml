@@ -1,0 +1,93 @@
+swagger: '2.0'
+info:
+  version: 1.0.0
+  title: Swagger EC2
+  description: "This is the API of EC2 service. You can find out more about the service at [http://example.com/ec2](http://example.com/ec2)."
+  license:
+    name: Example 2.0
+    url: http://www.example.com/licenses/LICENSE-2.0.html
+
+host: "ec2.example.com"
+basePath:
+schemes:
+  - "http"
+  - "https"
+
+tags:
+  - name: instance
+    description: "API about EC2 Instance"
+  - name: region
+    description: "API about region of EC2 Instance"
+
+paths:
+  /instances:
+    post:
+      tags:
+        - instance
+    get:
+      tags:
+        - instance
+
+
+externalDocs:
+  description: "Find out more about this service"
+  url: "http://ec2.example.com/docs"
+
+#swagger: '2.0'
+#info:
+#  version: 0.0.0
+#  title: Swagger petstore
+#  description: swagger demonstration
+#
+#host: localhost:9001
+#paths:
+#  /pets:
+#    get:
+#      description: Returns all pets
+#      operationId: findPets
+#      produces:
+#      - application/json
+#      responses:
+#        default:
+#          description: Return the matching pets
+#          schema:
+#            type: array
+#            items:
+#              $ref: '#/definitions/pet'
+#    post:
+#      description: Creates a new pet in store
+#      operationId: addPet
+#      consumes:
+#      - application/json
+#      produces:
+#      - application/json
+#      parameters:
+#        - name: pet
+#          in: body
+#          description: The pet to add to the store
+#          required: true
+#          schema:
+#            $ref: '#/definitions/pet'
+#      responses:
+#        201:
+#          description: Returns the newly-added pet
+#          schema:
+#            $ref: '#/definitions/pet'
+#
+#definitions:
+#  pet:
+#    type: object
+#    required:
+#      - name
+#      - type
+#    properties:
+#      name:
+#        type: string
+#        minLength: 4
+#        maxLength: 6
+#      dob:
+#        type: string
+#        format: 'date'
+#      type:
+#        type: string
+#        enum: [cat, dog, bird, snake, duck]
