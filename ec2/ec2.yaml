@@ -1,3 +1,5 @@
+# this is an example of the Uber API
+# as a demonstration of an API spec in YAML
 swagger: '2.0'
 info:
   version: 1.0.0
@@ -8,7 +10,7 @@ info:
     url: http://www.example.com/licenses/LICENSE-2.0.html
 
 host: "ec2.example.com"
-basePath:
+basePath: "/"
 schemes:
   - "http"
   - "https"
@@ -21,73 +23,270 @@ tags:
 
 paths:
   /instances:
-    post:
-      tags:
-        - instance
     get:
+      summary: 获取实例基本信息
       tags:
-        - instance
-
-
-externalDocs:
-  description: "Find out more about this service"
-  url: "http://ec2.example.com/docs"
-
-#swagger: '2.0'
-#info:
-#  version: 0.0.0
-#  title: Swagger petstore
-#  description: swagger demonstration
-#
-#host: localhost:9001
-#paths:
-#  /pets:
-#    get:
-#      description: Returns all pets
-#      operationId: findPets
-#      produces:
-#      - application/json
-#      responses:
-#        default:
-#          description: Return the matching pets
-#          schema:
-#            type: array
-#            items:
-#              $ref: '#/definitions/pet'
-#    post:
-#      description: Creates a new pet in store
-#      operationId: addPet
-#      consumes:
-#      - application/json
-#      produces:
-#      - application/json
-#      parameters:
-#        - name: pet
-#          in: body
-#          description: The pet to add to the store
-#          required: true
-#          schema:
-#            $ref: '#/definitions/pet'
-#      responses:
-#        201:
-#          description: Returns the newly-added pet
-#          schema:
-#            $ref: '#/definitions/pet'
-#
-#definitions:
-#  pet:
-#    type: object
-#    required:
-#      - name
-#      - type
-#    properties:
-#      name:
-#        type: string
-#        minLength: 4
-#        maxLength: 6
-#      dob:
-#        type: string
-#        format: 'date'
-#      type:
-#        type: string
-#        enum: [cat, dog, bird, snake, duck]
+        - Instance
+      parameters:
+        - name: Content-type
+          in: header
+          description: content type of the request, should be application/vnd.hic+json
+          type: string
+          required: true
+        - name: Accept
+          in: header
+          description: accept type of the request, should be application/vnd.hic+json
+          type: string
+          required: true
+        - name: X-region
+          in: header
+          description: 区域
+          type: string
+          required: true
+      responses:
+        200:
+          description: OK
+          headers:
+            Content-Type:
+              type: string
+              description: the response media type
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/definitions/instance'
+        401:
+          description: Unauthorized
+          headers:
+            Content-Type:
+              type: string
+              description: the response media type
+        406:
+          description: Not Acceptable
+          headers:
+            Content-Type:
+              type: string
+              description: the response media type
+        500:
+          description: Unexpected error
+          headers:
+            Content-Type:
+              type: string
+              description: the response media type
+          schema:
+            $ref: '#/definitions/failure'
+    post:
+      summary: 新建EC2实例
+      tags:
+        - Instance
+      description: user wants to create a new instance
+      parameters:
+        - name: Content-type
+          in: header
+          description: content type of the request, should be application/vnd.hic+json
+          type: string
+          required: true
+        - name: Accept
+          in: header
+          description: accept type of the request, should be application/vnd.hic+json
+          type: string
+          required: true
+        - name: body
+          in: body
+          description: new instance info
+          schema:
+            $ref: '#/definitions/new-service-request'
+      responses:
+        202:
+          description: Accepted
+          headers:
+            Content-Type:
+              type: string
+              description: the response media type
+            Content-Location:
+              type: string
+              description: the uri of querying result
+          schema:
+            type: object
+            properties:
+              data:
+                $ref: '#/definitions/asynchronous-new-instance-response'
+        400:
+          description: Bad Request
+          headers:
+            Content-Type:
+              type: string
+              description: the response media type
+          schema:
+            $ref: '#/definitions/failure'
+        401:
+          description: Unauthorized
+          headers:
+            Content-Type:
+              type: string
+              description: the response media type
+        403:
+          description: Forbidden
+          headers:
+            Content-Type:
+              type: string
+              description: the response media type
+        406:
+          description: Not Acceptable
+          headers:
+            Content-Type:
+              type: string
+              description: the response media type
+        415:
+          description: Unsupported Media Type
+          headers:
+            Content-Type:
+              type: string
+              description: the response media type
+        500:
+          description: Unexpected error
+          headers:
+            Content-Type:
+              type: string
+              description: the response media type
+          schema:
+            $ref: '#/definitions/failure'
+definitions:
+  new-service-request:
+    type: object
+    properties:
+      data:
+        type: object
+        required:
+          - type
+          - id
+        properties:
+          type:
+            type: string
+          id:
+            type: string
+          attributes:
+            type: object
+            required:
+              - name
+              - plan
+            properties:
+              name:
+                type: string
+              plan:
+                type: object
+                properties:
+                  alias:
+                    type: string
+                  flavor_id:
+                    type: string
+                  image_id:
+                    type: string
+                  az:
+                    type: string
+  instance:
+    type: object
+    required:
+      - id
+      - type
+    properties:
+      id:
+        type: string
+      type:
+        type: string
+      attributes:
+        type: object
+        properties:
+          name:
+            type: string
+          alias:
+            type: string
+          image_id:
+            type: string
+          region_id:
+            type: string
+          status:
+            type: string
+          flavor_id:
+            type: string
+      links:
+        $ref: '#/definitions/links'
+  asynchronous-new-instance-response:
+    type: object
+    required:
+      - id
+      - type
+    properties:
+      id:
+        type: string
+      type:
+        type: string
+      attributes:
+        type: object
+        properties:
+          result:
+            type: string
+          result_code:
+            type: integer
+          result_description:
+            type: string
+          results:
+            type: array
+            items:
+              type: object
+              properties:
+                job_id:
+                  type: string
+                instance_id:
+                  type: string
+      links:
+        $ref: '#/definitions/links'
+  failure:
+    type: object
+    properties:
+      errors:
+        type: array
+        items:
+          $ref: '#/definitions/error'
+      meta:
+        $ref: '#/definitions/meta'
+  error:
+    type: object
+    properties:
+      id:
+        description: A unique identifier for the occurrence of the problem
+        type: string
+      links:
+        $ref: '#/definitions/links'
+      status:
+        description: Http status code
+        type: string
+      code:
+        description: Application specific error code
+        type: string
+      title:
+        type: string
+      detail:
+        type: string
+      source:
+        type: object
+        properties:
+          pointer:
+            description: A JSON Pointer[RFC6901] to associated entity in the request document. [e.g. /data for data object, /data/attributes/title for specific attribute
+            type: string
+          parameter:
+            description: A string indicating which query parameter caused error
+            type: string
+      meta:
+        $ref: '#/definitions/meta'
+  meta:
+    type: object
+  links:
+    type: object
+    properties:
+      self:
+        type: string
+      related:
+        type: string
