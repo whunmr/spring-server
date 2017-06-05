@@ -23,44 +23,13 @@ public class Instance {
     @Transient
     private Region region;
     private String az;
-    private InstanceStatus status = InstanceStatus.Accepted;
 
-    /*
-    Instance status of AWS
-    instance-state-code - The code for the instance state, as a 16-bit unsigned integer. The high byte is an opaque internal value and should be ignored. The low byte is set based on the state represented.
-                          The valid values are 0 (pending), 16 (running), 32 (shutting-down), 48 (terminated), 64 (stopping), and 80 (stopped).
-    instance-state-name - The state of the instance (pending | running | shutting-down | terminated | stopping | stopped ).
-    instance-status.reachability - Filters on instance status where the name is reachability (passed | failed | initializing | insufficient-data ).
-    instance-status.status - The status of the instance (ok | impaired | initializing | insufficient-data | not-applicable ).
-    system-status.reachability - Filters on system status where the name is reachability (passed | failed | initializing | insufficient-data ).
-    system-status.status - The system status of the instance (ok | impaired | initializing | insufficient-data | not-applicable ).
-    */
+    private VMStatus  vmStatus;
 
-    /*
-    ============  =================================================================
-    VM State      Commands
-    ============  =================================================================
-    Paused        unpause
-    Suspended     resume
-    Active        suspend, pause, rescue, rebuild, delete, backup, stop, reboot
-    Shutoff       suspend, pause, rescue, rebuild, delete, backup, start, stop, reboot
-    Rescued       unrescue, pause
-    Stopped       rescue, delete, start
-    Error         delete
-    Building      delete
-    Rescued       delete, stop, reboot
-    ============  =================================================================
-    */
-
-    enum InstanceStatus {Building, Accepted, Created, Running, Pause, Stopped, Deleting, Retired}
-    enum VMStatus {Building, Active, Stopped, ShutOff, Error}
+    enum VMStatus {Pending, Running, ShuttingDown, Rebooting, Terminated}
 
     public Instance() {
         region = new Region(DEFAULT_REGION);
-    }
-
-    public Instance(String regionName) {
-        region = new Region(regionName);
     }
 
     public Instance(String name, String imageId, String flavorId) {
@@ -69,8 +38,58 @@ public class Instance {
         this.flavorId = flavorId;
     }
 
-    public String region() {
-        return region.name();
+    public VMStatus status() {
+        return vmStatus;
+    }
+
+    public boolean launch() {
+        if (vmStatus == null) {
+            vmStatus = VMStatus.Pending;
+            return true;
+        }
+        return false;
+    }
+
+    //TODO how notify resource context to retire instance physically
+    public boolean syncStatus(VMStatus vmStatus) {
+        if (vmStatus == VMStatus.Running) {
+            if (this.vmStatus == VMStatus.Pending) {
+                this.vmStatus = VMStatus.Running;
+                return true;
+            } else if (this.vmStatus == VMStatus.Rebooting) {
+                this.vmStatus = VMStatus.Running;
+                return true;
+            }else {
+                return false;
+            }
+        }
+
+        if (vmStatus == VMStatus.Terminated) {
+            if (this.vmStatus == VMStatus.ShuttingDown) {
+                this.vmStatus = VMStatus.Terminated;
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        return false;
+    }
+
+    public boolean reboot() {
+        if (this.vmStatus == VMStatus.Running) {
+            vmStatus = VMStatus.Rebooting;
+            return true;
+        }
+        return false;
+    }
+
+    public boolean terminate() {
+        if (vmStatus == VMStatus.Running) {
+            vmStatus = VMStatus.ShuttingDown;
+            return true;
+        }
+        return false;
     }
 
     public void setAZ(String AZ) {
@@ -89,17 +108,4 @@ public class Instance {
         this.instanceId = instanceId;
     }
 
-    public boolean start() {
-        this.status = InstanceStatus.Running;
-        return true;
-    }
-
-    //TODO how notify resource context to retire instance physically
-    public boolean retire() {
-        if (status != InstanceStatus.Running) {
-            return true;
-
-        }
-        return false;
-    }
 }

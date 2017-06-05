@@ -16,3 +16,8 @@ You can view the api documentation in swagger-ui by pointing to
 http://localhost:8080/  
 
 Change default port value in application.properties
+
+
+### Requirement
+# Instance status diagram
+![Instance Lifecycle](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/images/instance_lifecycle.png)
