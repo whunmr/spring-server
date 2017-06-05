@@ -10,5 +10,5 @@ public interface InstanceRepository {
 
     public List<Instance> findAll();
 
-    Instance find(String instanceId);
+    public Instance find(String instanceId);
 }
