@@ -2,7 +2,7 @@ package com.tw.dddsample.interfaces.assembler;
 
 import com.tw.dddsample.domain.Instance;
 import io.swagger.model.InstanceAttributes;
-import io.swagger.model.NewServiceRequest;
+import io.swagger.model.InstanceCreateRequest;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -11,13 +11,6 @@ import java.util.List;
  * Created by azhu on 27/05/2017.
  */
 public class InstanceAssembler {
-
-    public Instance fromDTO(NewServiceRequest body) {
-
-        Instance instance = new Instance(body.getData().getAttributes().getName(), body.getData().getAttributes().getPlan().getImageId(), body.getData().getAttributes().getPlan().getFlavorId());
-        instance.setAZ(body.getData().getAttributes().getPlan().getAz());
-        return instance;
-    }
 
     public io.swagger.model.Instance toDTO(Instance operateInstances) {
         io.swagger.model.Instance instance = new io.swagger.model.Instance();
@@ -35,5 +28,11 @@ public class InstanceAssembler {
             instances.add(toDTO(instance));
         }
         return instances;
+    }
+
+    public Instance fromDTO(InstanceCreateRequest creationRequest) {
+        Instance instance = new Instance(creationRequest.getData().getAttributes().getName(), creationRequest.getData().getAttributes().getPlan().getImageId(), creationRequest.getData().getAttributes().getPlan().getFlavorId());
+        instance.setAZ(creationRequest.getData().getAttributes().getPlan().getAz());
+        return instance;
     }
 }

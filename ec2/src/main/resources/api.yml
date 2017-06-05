@@ -25,19 +25,10 @@ paths:
   /instances:
     get:
       summary: 获取实例基本信息
+      operationId: findInstances
       tags:
         - Instance
       parameters:
-        - name: Content-type
-          in: header
-          description: content type of the request, should be application/vnd.hic+json
-          type: string
-          required: true
-        - name: Accept
-          in: header
-          description: accept type of the request, should be application/vnd.hic+json
-          type: string
-          required: true
         - name: X-region
           in: header
           description: 区域
@@ -51,12 +42,7 @@ paths:
               type: string
               description: the response media type
           schema:
-            type: object
-            properties:
-              data:
-                type: array
-                items:
-                  $ref: '#/definitions/instance'
+            $ref: '#/definitions/InstanceList'
         401:
           description: Unauthorized
           headers:
@@ -79,25 +65,16 @@ paths:
             $ref: '#/definitions/failure'
     post:
       summary: 新建EC2实例
+      operationId: createInstances
       tags:
         - Instance
       description: user wants to create a new instance
       parameters:
-        - name: Content-type
-          in: header
-          description: content type of the request, should be application/vnd.hic+json
-          type: string
-          required: true
-        - name: Accept
-          in: header
-          description: accept type of the request, should be application/vnd.hic+json
-          type: string
-          required: true
         - name: body
           in: body
           description: new instance info
           schema:
-            $ref: '#/definitions/new-service-request'
+            $ref: '#/definitions/InstanceCreateRequest'
       responses:
         202:
           description: Accepted
@@ -109,10 +86,8 @@ paths:
               type: string
               description: the uri of querying result
           schema:
-            type: object
-            properties:
-              data:
-                $ref: '#/definitions/asynchronous-new-instance-response'
+            $ref: '#/definitions/InstanceCreationResponse'
+
         400:
           description: Bad Request
           headers:
@@ -154,47 +129,33 @@ paths:
           schema:
             $ref: '#/definitions/failure'
   /instances/{instanceId}/action:
-      put:
-        summary: 对实例进行操作
-        tags:
-          - Instance
-          - Action
-        parameters:
-          - name: instanceId
-            type: string
-            in: path
-            description: 实例唯一标识
-          - name: action
-            type: string
-            in: query
-            description: 对实例的操作，如start
-          - name: Content-type
-            in: header
-            description: content type of the request, should be application/vnd.hic+json
-            type: string
-            required: true
-          - name: Accept
-            in: header
-            description: accept type of the request, should be application/vnd.hic+json
-            type: string
-            required: true
-        responses:
-          200:
-            description: OK
-            headers:
-              Content-Type:
-                type: string
-                description: the response media type
-            schema:
-              type: object
-              properties:
-                data:
-                  type: array
-                  items:
-                    $ref: '#/definitions/instance'
-
+    put:
+      summary: 对实例进行操作
+      operationId: operateInstance
+      tags:
+        - Instance
+        - Action
+      parameters:
+        - name: instanceId
+          type: string
+          in: path
+          description: 实例唯一标识
+          required: true
+        - name: action
+          type: string
+          in: query
+          description: 对实例的操作，如start
+      responses:
+        200:
+          description: OK
+          headers:
+            Content-Type:
+              type: string
+              description: the response media type
+          schema:
+            $ref: '#/definitions/InstanceResponse'
 definitions:
-  new-service-request:
+  InstanceCreateRequest:
     type: object
     properties:
       data:
@@ -253,7 +214,7 @@ definitions:
             type: string
       links:
         $ref: '#/definitions/links'
-  asynchronous-new-instance-response:
+  InstanceCreationJob:
     type: object
     required:
       - id
@@ -330,3 +291,22 @@ definitions:
         type: string
       related:
         type: string
+  InstanceList:
+    type: object
+    properties:
+      data:
+        type: array
+        items:
+          $ref: '#/definitions/instance'
+  InstanceCreationResponse:
+    type: object
+    properties:
+      data:
+        $ref: '#/definitions/InstanceCreationJob'
+  InstanceResponse:
+    type: object
+    properties:
+      data:
+        type: object
+        items:
+          $ref: '#/definitions/instance'

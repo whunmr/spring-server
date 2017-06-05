@@ -25,15 +25,23 @@ public class InstancesFacade implements InstancesApiDelegate {
 
 
     @Override
-    public ResponseEntity<InlineResponse202> instancesPost(String contentType, String accept, NewServiceRequest body) {
+    public ResponseEntity<InstanceList> findInstances(String xRegion) {
+        List<Instance> allInstance = instanceRepository.findAll();
+
+        return new ResponseEntity<>(new InstanceList().data(instanceAssembler.toDTOs(allInstance)), HttpStatus.OK);
+    }
+
+
+    @Override
+    public ResponseEntity<InstanceCreationResponse> createInstances(InstanceCreateRequest body) {
         Instance createdInstance = instanceService.createInstance(new InstanceAssembler().fromDTO(body));
 
         io.swagger.model.Instance instance = instanceAssembler.toDTO(createdInstance);
-        InlineResponse202 response = new InlineResponse202()
-                .data(new AsynchronousNewInstanceResponse()
+        InstanceCreationResponse response = new InstanceCreationResponse()
+                .data(new InstanceCreationJob()
                         .id(instance.getId())
-                        .attributes(new AsynchronousnewinstanceresponseAttributes()
-                                .addResultsItem(new AsynchronousnewinstanceresponseAttributesResults()
+                        .attributes(new InstanceCreationJobAttributes()
+                                .addResultsItem(new InstanceCreationJobAttributesResults()
                                         .instanceId(instance.getId())
                                 )
                         )
@@ -43,23 +51,13 @@ public class InstancesFacade implements InstancesApiDelegate {
     }
 
     @Override
-    public ResponseEntity<InlineResponse200> instancesGet(String contentType, String accept, String xRegion) {
-        List<Instance> allInstance = instanceRepository.findAll();
-
-        return new ResponseEntity<>(new InlineResponse200().data(instanceAssembler.toDTOs(allInstance)), HttpStatus.OK);
-    }
-
-
-    @Override
-    public ResponseEntity<InlineResponse200> instancesInstanceIdActionPut(String instanceId, String contentType, String accept, String action) {
+    public ResponseEntity<InstanceResponse> operateInstance(String instanceId, String action) {
         Instance instance1 = instanceRepository.find(instanceId);
         Instance executedInstance = InstanceOperation.valueOf(action).execute(instanceService, instance1);
 
         io.swagger.model.Instance instance = instanceAssembler.toDTO(executedInstance);
-        InlineResponse200 response200 = new InlineResponse200();
-        response200.addDataItem(instance);
 
-        return new ResponseEntity<>(response200, HttpStatus.OK);
+        return new ResponseEntity<>(new InstanceResponse().data(instance), HttpStatus.OK);
     }
 
     private enum InstanceOperation {
