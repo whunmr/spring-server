@@ -10,19 +10,19 @@ import springfox.documentation.service.Contact;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-05-26T15:53:30.758+08:00")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-06-05T13:54:25.717+08:00")
 
 @Configuration
 public class SwaggerDocumentationConfig {
 
     ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-            .title("Swagger petstore")
-            .description("swagger demonstration")
-            .license("")
-            .licenseUrl("http://unlicense.org")
+            .title("Swagger EC2")
+            .description("This is the API of EC2 service. You can find out more about the service at [http://example.com/ec2](http://example.com/ec2).")
+            .license("Example 2.0")
+            .licenseUrl("http://www.example.com/licenses/LICENSE-2.0.html")
             .termsOfServiceUrl("")
-            .version("0.0.0")
+            .version("1.0.0")
             .contact(new Contact("","", ""))
             .build();
     }

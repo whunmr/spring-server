@@ -1,18 +1,14 @@
 package com.example.e2e;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.RestAssured;
-import io.swagger.model.Pet;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
+
 import static com.example.e2e.TestUtil.propertyValue;
-import static io.restassured.RestAssured.get;
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.is;
 
 public class PetsApiTest {
 
@@ -38,13 +34,13 @@ public class PetsApiTest {
                        .body("[0].name", equalTo("foo"));
     }
 
-    @Test
-    public void test__getPets_api__can__return_default_pets___by_json_deserialization() throws IOException {
-        String json = get("/pets").asString();
-
-        Pet[] pets = new ObjectMapper().readValue(json, Pet[].class);
-
-        assertThat(pets.length, is(1));
-        assertThat(pets[0].getName(), is("foo"));
-    }
+//    @Test
+//    public void test__getPets_api__can__return_default_pets___by_json_deserialization() throws IOException {
+//        String json = get("/pets").asString();
+//
+//        Pet[] pets = new ObjectMapper().readValue(json, Pet[].class);
+//
+//        assertThat(pets.length, is(1));
+//        assertThat(pets[0].getName(), is("foo"));
+//    }
 }
