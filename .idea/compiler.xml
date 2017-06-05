@@ -11,7 +11,7 @@
         <module name="eureka-service" />
         <module name="passport-service" />
         <module name="photo-service" />
-        <module name="swagger-demo" />
+        <module name="rds" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -20,8 +20,8 @@
       <module name="eureka-service" target="1.8" />
       <module name="passport-service" target="1.8" />
       <module name="photo-service" target="1.8" />
+      <module name="rds" target="1.8" />
       <module name="service-registration-and-discovery" target="1.8" />
-      <module name="swagger-demo" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

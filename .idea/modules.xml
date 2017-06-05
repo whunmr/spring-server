@@ -7,6 +7,7 @@
       <module fileurl="file://$PROJECT_DIR$/eureka-service/eureka-service.iml" filepath="$PROJECT_DIR$/eureka-service/eureka-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/passport-service/passport-service.iml" filepath="$PROJECT_DIR$/passport-service/passport-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/photo-service/photo-service.iml" filepath="$PROJECT_DIR$/photo-service/photo-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/rds/rds.iml" filepath="$PROJECT_DIR$/rds/rds.iml" />
       <module fileurl="file://$PROJECT_DIR$/service-registration-and-discovery.iml" filepath="$PROJECT_DIR$/service-registration-and-discovery.iml" />
     </modules>
   </component>

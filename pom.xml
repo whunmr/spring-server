@@ -21,6 +21,7 @@
         <module>passport-service</module>
         <module>eureka-service</module>
         <module>ec2</module>
+        <module>rds</module>
     </modules>
 
     <build>
