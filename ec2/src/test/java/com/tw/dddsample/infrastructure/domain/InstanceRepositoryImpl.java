@@ -29,4 +29,9 @@ public class InstanceRepositoryImpl implements InstanceRepository {
     public List<Instance> findAll() {
         return null;
     }
+
+    @Override
+    public Instance find(String instanceId) {
+        return MEM_DB.get(instanceId);
+    }
 }

@@ -38,4 +38,9 @@ public class InstanceRepositoryDBImpl extends SimpleJpaRepository<Instance, Stri
         return super.findAll();
     }
 
+    @Override
+    public Instance find(String instanceId) {
+        return super.findOne(instanceId);
+    }
+
 }
