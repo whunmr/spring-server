@@ -12,7 +12,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableAutoConfiguration
 @EnableEurekaClient
 @EnableSwagger2
-@ComponentScan(basePackages = {"com.tw.dddsample", "io.swagger", "com.example"})
+@ComponentScan(basePackages = {"com.tw.dddsample", "io.swagger"})
 public class Application {
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
