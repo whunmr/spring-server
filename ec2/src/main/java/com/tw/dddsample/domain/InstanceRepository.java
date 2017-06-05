@@ -9,4 +9,6 @@ public interface InstanceRepository {
     public Instance save(Instance instance);
 
     public List<Instance> findAll();
+
+    Instance find(String instanceId);
 }

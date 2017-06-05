@@ -153,6 +153,44 @@ paths:
               description: the response media type
           schema:
             $ref: '#/definitions/failure'
+  /instances/{intance_id}/action:
+    put:
+        summary: 对实例进行操作
+            tags:
+              - Instance
+              - Action
+            parameters:
+              - name: instance_id
+                type: string
+                description: 实例唯一标识
+              - name: action
+                type: string
+                description: 对实例的操作，如start
+              - name: Content-type
+                in: header
+                description: content type of the request, should be application/vnd.hic+json
+                type: string
+                required: true
+              - name: Accept
+                in: header
+                description: accept type of the request, should be application/vnd.hic+json
+                type: string
+                required: true
+            responses:
+              200:
+                description: OK
+                headers:
+                  Content-Type:
+                    type: string
+                    description: the response media type
+                schema:
+                  type: object
+                  properties:
+                    data:
+                      type: array
+                      items:
+                        $ref: '#/definitions/instance'
+
 definitions:
   new-service-request:
     type: object

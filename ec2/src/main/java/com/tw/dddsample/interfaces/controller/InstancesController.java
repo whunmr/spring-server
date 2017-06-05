@@ -12,10 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 //TODO move to infrastructure
 @Component
@@ -46,6 +43,41 @@ public class InstancesController implements InstancesApiDelegate {
     public ResponseEntity<InlineResponse200> instancesGet(String contentType, String accept, String xRegion) {
         //TODO:
         return null;
+    }
+
+
+    @RequestMapping(path = "/instances/{instanceId}/action", method = RequestMethod.PUT)
+    @ResponseBody
+    public String operateInstances(@RequestParam String action, @PathVariable String instanceId) {
+        Instance instance = instanceRepository.find(instanceId);
+        Instance executedInstance = InstanceOperation.valueOf(action).execute(instanceService, instance);
+        return new GsonBuilder().create().toJson(instance);
+    }
+
+    private enum InstanceOperation {
+
+        //TODO to delete it, since it won't open to end user
+        Launch {
+            @Override
+            public Instance execute(InstanceService instanceService, Instance instance) {
+                return instanceService.launch(instance);
+            }
+        },
+        Reboot {
+            @Override
+            public Instance execute(InstanceService instanceService, Instance instance) {
+                return instanceService.reboot(instance);
+            }
+        },
+        Terminate {
+            @Override
+            public Instance execute(InstanceService instanceService, Instance instance) {
+                return instanceService.terminate(instance);
+            }
+        };
+
+        public abstract Instance execute(InstanceService instanceService, Instance instance);
+
     }
 
     @Override

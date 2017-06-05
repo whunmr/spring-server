@@ -23,4 +23,19 @@ public class InstanceService {
         instance.setAZ(regionSelectionService.selectAZ(instance.getAZ(), flavorRepository.findFlavor(instance.getFlavorId())));
         return instanceRepository.save(instance);
     }
+
+    public Instance launch(Instance instance) {
+        instance.launch();
+        return instanceRepository.save(instance);
+    }
+
+    public Instance reboot(Instance instance) {
+        instance.reboot();
+        return instanceRepository.save(instance);
+    }
+
+    public Instance terminate(Instance instance) {
+        instance.terminate();
+        return instanceRepository.save(instance);
+    }
 }

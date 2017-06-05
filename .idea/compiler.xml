@@ -8,6 +8,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="bookmark-service" />
         <module name="ec2" />
+        <module name="ec2 (1)" />
         <module name="eureka-service" />
         <module name="passport-service" />
         <module name="photo-service" />
@@ -17,6 +18,7 @@
     <bytecodeTargetLevel>
       <module name="bookmark-service" target="1.8" />
       <module name="ec2" target="1.8" />
+      <module name="ec2 (1)" target="1.8" />
       <module name="eureka-service" target="1.8" />
       <module name="passport-service" target="1.8" />
       <module name="photo-service" target="1.8" />
