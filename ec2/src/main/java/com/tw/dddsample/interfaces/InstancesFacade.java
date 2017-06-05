@@ -1,9 +1,9 @@
-package com.tw.dddsample.interfaces.controller;
+package com.tw.dddsample.interfaces;
 
 import com.tw.dddsample.application.InstanceService;
 import com.tw.dddsample.domain.Instance;
 import com.tw.dddsample.domain.InstanceRepository;
-import com.tw.dddsample.interfaces.controller.assembler.InstanceAssembler;
+import com.tw.dddsample.interfaces.assembler.InstanceAssembler;
 import io.swagger.api.InstancesApiDelegate;
 import io.swagger.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class InstancesController implements InstancesApiDelegate {
+public class InstancesFacade implements InstancesApiDelegate {
 
     @Autowired
     private InstanceService instanceService;

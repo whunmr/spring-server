@@ -1,4 +1,4 @@
-package com.tw.dddsample.interfaces.controller.assembler;
+package com.tw.dddsample.interfaces.assembler;
 
 import com.tw.dddsample.domain.Instance;
 import io.swagger.model.InstanceAttributes;

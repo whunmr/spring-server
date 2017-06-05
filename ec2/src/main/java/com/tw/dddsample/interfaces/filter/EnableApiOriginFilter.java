@@ -1,4 +1,4 @@
-package com.tw.dddsample.interfaces.controller.filter;
+package com.tw.dddsample.interfaces.filter;
 
 import io.swagger.api.ApiOriginFilter;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
