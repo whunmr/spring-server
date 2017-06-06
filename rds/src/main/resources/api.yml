@@ -29,12 +29,12 @@ paths:
           name: body
           required: true
           schema:
-            $ref: '#/definitions/CreateDBInstanceMessage'
+            $ref: '#/definitions/CreateDBInstanceRequest'
       responses:
         '200':
           description: Success
           schema:
-            $ref: '#/definitions/CreateDBInstanceResult'
+            $ref: '#/definitions/CreateDBInstanceResponse'
         '480':
           description: StorageTypeNotSupportedFault
           schema:
@@ -50,7 +50,7 @@ paths:
           name: body
           required: true
           schema:
-            $ref: '#/definitions/FindDBInstancesMessage'
+            $ref: '#/definitions/FindDBInstancesRequest'
       responses:
         '200':
           description: Success
@@ -58,26 +58,25 @@ paths:
             type: array
             items:
               $ref: '#/definitions/DBInstance'
-        '480':
+        '404':
           description: DBInstanceNotFoundFault
           schema:
             $ref: '#/definitions/DBInstanceNotFoundFault'
 
-
 definitions:
-  CreateDBInstanceMessage:
+  CreateDBInstanceRequest:
     description: <p/>
     properties:
-      DBInstanceIdentifier:
+      instanceId:
         type: string
         description: '<p>The DB instance identifier. This parameter is stored as a lowercase string.</p> <p>Constraints:</p> <ul> <li> <p>Must contain from 1 to 63 alphanumeric characters or hyphens (1 to 15 for SQL Server).</p> </li> <li> <p>First character must be a letter.</p> </li> <li> <p>Cannot end with a hyphen or contain two consecutive hyphens.</p> </li> </ul> <p>Example: <code>mydbinstance</code> </p>'
-      DBInstanceClass:
+      instanceClass:
         type: string
         description: '<p>The compute and memory capacity of the DB instance. Note that not all instance classes are available in all regions for all DB engines.</p> <p> Valid Values: <code>db.t1.micro | db.m1.small | db.m1.medium | db.m1.large | db.m1.xlarge | db.m2.xlarge |db.m2.2xlarge | db.m2.4xlarge | db.m3.medium | db.m3.large | db.m3.xlarge | db.m3.2xlarge | db.m4.large | db.m4.xlarge | db.m4.2xlarge | db.m4.4xlarge | db.m4.10xlarge | db.r3.large | db.r3.xlarge | db.r3.2xlarge | db.r3.4xlarge | db.r3.8xlarge | db.t2.micro | db.t2.small | db.t2.medium | db.t2.large</code> </p>'
-      Engine:
+      engine:
         type: string
         description: '<p>The name of the database engine to be used for this instance.</p> <p> Valid Values: <code>mysql</code> | <code>mariadb</code> | <code>oracle-se1</code> | <code>oracle-se2</code> | <code>oracle-se</code> | <code>oracle-ee</code> | <code>sqlserver-ee</code> | <code>sqlserver-se</code> | <code>sqlserver-ex</code> | <code>sqlserver-web</code> | <code>postgres</code> | <code>aurora</code> </p> <p>Not every database engine is available for every AWS region.</p>'
-      Port:
+      port:
         type: integer
         description: '<p>The port number on which the database accepts connections.</p> <p> <b>MySQL</b> </p> <p> Default: <code>3306</code> </p> <p> Valid Values: <code>1150-65535</code> </p> <p>Type: Integer</p> <p> <b>MariaDB</b> </p> <p> Default: <code>3306</code> </p> <p> Valid Values: <code>1150-65535</code> </p> <p>Type: Integer</p> <p> <b>PostgreSQL</b> </p> <p> Default: <code>5432</code> </p> <p> Valid Values: <code>1150-65535</code> </p> <p>Type: Integer</p> <p> <b>Oracle</b> </p> <p> Default: <code>1521</code> </p> <p> Valid Values: <code>1150-65535</code> </p> <p> <b>SQL Server</b> </p> <p> Default: <code>1433</code> </p> <p> Valid Values: <code>1150-65535</code> except for <code>1434</code>, <code>3389</code>, <code>47001</code>, <code>49152</code>, and <code>49152</code> through <code>49156</code>. </p> <p> <b>Amazon Aurora</b> </p> <p> Default: <code>3306</code> </p> <p> Valid Values: <code>1150-65535</code> </p> <p>Type: Integer</p>'
     required:
@@ -86,30 +85,30 @@ definitions:
       - Engine
     type: object
 
-  CreateDBInstanceResult:
+  CreateDBInstanceResponse:
     properties:
-      DBInstance:
+      instance:
         $ref: '#/definitions/DBInstance'
     type: object
 
   DBInstance:
     description: '<p>Contains the result of a successful invocation of the following actions:</p> <ul> <li> <p> <a>CreateDBInstance</a> </p> </li> <li> <p> <a>DeleteDBInstance</a> </p> </li> <li> <p> <a>ModifyDBInstance</a> </p> </li> </ul> <p>This data type is used as a response element in the <a>DescribeDBInstances</a> action.</p>'
     properties:
-      DBInstanceIdentifier:
+      instanceId:
         type: string
         description: Contains a user-supplied database identifier. This identifier is the unique key that identifies a DB instance.
-      DBInstanceClass:
+      instanceClass:
         type: string
         description: Contains the name of the compute and memory capacity class of the DB instance.
-      DBInstanceStatus:
-        type: string
-        description: Specifies the current state of this database.
-      Engine:
+      engine:
         type: string
         description: Provides the name of the database engine to be used for this DB instance.
-      DbInstancePort:
+      port:
         type: integer
         description: 'Specifies the port that the DB instance listens on. If the DB instance is part of a DB cluster, this can be a different port than the DB cluster port.'
+      status:
+        type: string
+        description: Specifies the current state of this database.
     type: object
 
   StorageTypeNotSupportedFault:
@@ -117,13 +116,19 @@ definitions:
     properties: {}
     type: object
 
-  FindDBInstancesMessage:
+  FindDBInstancesRequest:
     description: <p/>
     properties:
-      DBInstanceIdentifier:
+      instanceId:
         type: string
         description: '<p>The user-supplied instance identifier. If this parameter is specified, information from only the specific DB instance is returned. This parameter isn''t case-sensitive.</p> <p>Constraints:</p> <ul> <li> <p>Must contain from 1 to 63 alphanumeric characters or hyphens</p> </li> <li> <p>First character must be a letter</p> </li> <li> <p>Cannot end with a hyphen or contain two consecutive hyphens</p> </li> </ul>'
     type: object
+
+  InstanceList:
+    description: RDS instance list
+    type: array
+    items:
+      $ref: '#/definitions/DBInstance'
 
   DBInstanceNotFoundFault:
     description: ' <i>DBInstanceIdentifier</i> does not refer to an existing DB instance. '
