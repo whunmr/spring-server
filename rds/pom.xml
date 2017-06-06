@@ -9,7 +9,7 @@
 
     <name>service-registration-and-discovery:rds</name>
 
-    <artifactId>ec2</artifactId>
+    <artifactId>rds</artifactId>
     <packaging>jar</packaging>
     <properties>
         <start-class>com.example.Application</start-class>
