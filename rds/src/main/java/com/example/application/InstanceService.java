@@ -1,9 +1,11 @@
 package com.example.application;
 
 import com.example.application.ec2.Ec2Instance;
+import com.example.domain.Instance;
+import com.example.domain.InstanceRepository;
+import com.example.interfaces.assembler.InstanceAssembler;
 import io.swagger.model.CreateDBInstanceRequest;
 import io.swagger.model.CreateDBInstanceResponse;
-import io.swagger.model.DBInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -13,19 +15,24 @@ public class InstanceService {
     @Autowired
     Ec2InstanceService ec2InstanceService;
 
-    public CreateDBInstanceResponse createInstance(CreateDBInstanceRequest request) {
+    @Autowired
+    private InstanceRepository instanceRepository;
 
-        Ec2Instance instance = ec2InstanceService.createInstance(request.getInstanceClass());
+    public CreateDBInstanceResponse createInstance(CreateDBInstanceRequest req) {
+
+        Ec2Instance ec2Instance = ec2InstanceService.createInstance(req.getInstanceClass());
+
+        Instance instance = new Instance( req.getInstanceId()
+                                        , ec2Instance.getId()
+                                        , req.getInstanceClass()
+                                        , req.getEngine()
+                                        , req.getPort()
+                                        , ec2Instance.getStatus());
+
+        instanceRepository.save(instance);
 
         CreateDBInstanceResponse rsp = new CreateDBInstanceResponse();
-
-        DBInstance dbInstance = new DBInstance().instanceId(instance.getId())
-                                                .instanceClass(instance.getFlavorId())
-                                                .engine(request.getEngine())
-                                                .port(request.getPort() == 0 ? 3261 : request.getPort())
-                                                .status(instance.getStatus());
-
-        rsp.setInstance(dbInstance);
+        rsp.setInstance(InstanceAssembler.toDTO(instance));
         return rsp;
     }
 }
