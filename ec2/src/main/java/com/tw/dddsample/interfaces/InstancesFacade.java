@@ -5,7 +5,9 @@ import com.tw.dddsample.domain.Instance;
 import com.tw.dddsample.domain.InstanceRepository;
 import com.tw.dddsample.interfaces.assembler.InstanceAssembler;
 import io.swagger.api.InstancesApiDelegate;
-import io.swagger.model.*;
+import io.swagger.model.InstanceCreateRequest;
+import io.swagger.model.InstanceList;
+import io.swagger.model.InstanceResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,21 +35,16 @@ public class InstancesFacade implements InstancesApiDelegate {
 
 
     @Override
-    public ResponseEntity<InstanceCreationResponse> createInstances(InstanceCreateRequest body) {
+    public ResponseEntity<InstanceResponse> createInstances(InstanceCreateRequest body) {
         Instance createdInstance = instanceService.createInstance(new InstanceAssembler().fromDTO(body));
 
-        io.swagger.model.Instance instance = instanceAssembler.toDTO(createdInstance);
-        InstanceCreationResponse response = new InstanceCreationResponse()
-                .data(new InstanceCreationJob()
-                        .id(instance.getId())
-                        .attributes(new InstanceCreationJobAttributes()
-                                .addResultsItem(new InstanceCreationJobAttributesResults()
-                                        .instanceId(instance.getId())
-                                )
-                        )
-                );
+        return new ResponseEntity<>(new InstanceResponse().data(instanceAssembler.toDTO(createdInstance)), HttpStatus.OK);
+    }
 
-        return new ResponseEntity<>(response, HttpStatus.OK);
+    @Override
+    public ResponseEntity<InstanceResponse> findInstance(String instanceId) {
+        Instance instance = instanceRepository.find(instanceId);
+        return new ResponseEntity<>(new InstanceResponse().data(instanceAssembler.toDTO(instance)), HttpStatus.OK);
     }
 
     @Override

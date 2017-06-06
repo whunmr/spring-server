@@ -1,5 +1,6 @@
 package com.tw.dddsample.domain;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Transient;
@@ -24,9 +25,10 @@ public class Instance {
     private Region region;
     private String az;
 
+    @Column(name = "STATUS")
     private VMStatus  vmStatus;
 
-    enum VMStatus {Pending, Running, ShuttingDown, Rebooting, Terminated}
+    public enum VMStatus {Pending, Running, ShuttingDown, Rebooting, Terminated}
 
     public Instance() {
         region = new Region(DEFAULT_REGION);

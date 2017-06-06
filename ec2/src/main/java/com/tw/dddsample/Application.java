@@ -10,7 +10,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  * Created by azhu on 27/05/2017.
  */
 @EnableAutoConfiguration
-@EnableEurekaClient
+//@EnableEurekaClient
 @EnableSwagger2
 @ComponentScan(basePackages = {"com.tw.dddsample", "io.swagger"})
 public class Application {
