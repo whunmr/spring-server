@@ -37,6 +37,8 @@ paths:
             $ref: '#/definitions/CreateDBInstanceResponse'
         401:
           description: Unauthorized
+        409: #TODO: 当资源已经存在时返回409 Conflict，并在response中返回当前资源的信息
+          description: Resource already exists
 
     get:
       summary: Get RDS instances list
@@ -68,7 +70,7 @@ paths:
           description: Success
           schema:
             $ref: '#/definitions/DBInstance'
-        404:
+        404: #TODO: 代码中实现404返回值
           description: DBInstanceNotFoundFault
           schema:
             $ref: '#/definitions/DBInstanceNotFoundFault'
