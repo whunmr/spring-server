@@ -15,7 +15,7 @@ schemes:
 
 tags:
   - name: instance
-    description: "API about RDS Instance"
+    description: "API about RDS Ec2Instance"
 
 paths:
   /instances:
@@ -23,7 +23,7 @@ paths:
       summary: Create RDS instance
       tags:
         - instance
-      operationId: addInstance
+      operationId: createInstance
       parameters:
         - in: body
           name: body
@@ -112,7 +112,7 @@ definitions:
     type: object
 
   StorageTypeNotSupportedFault:
-    description: ' <i>StorageType</i> specified cannot be associated with the DB Instance. '
+    description: ' <i>StorageType</i> specified cannot be associated with the DB Ec2Instance. '
     properties: {}
     type: object
 
