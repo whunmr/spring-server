@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Component("instanceRepository")
@@ -16,6 +17,7 @@ public class InstanceRepositoryDBImpl extends SimpleJpaRepository<Instance, Stri
     }
 
     @Override
+    @Transactional
     public Instance save(Instance instance) {
         return super.save(instance);
     }
