@@ -27,7 +27,7 @@ public class InstancesFacade implements InstancesApiDelegate {
 
 
     @Override
-    public ResponseEntity<InstanceList> findInstances(String xRegion) {
+    public ResponseEntity<InstanceList> findInstances(String region) {
         List<Instance> allInstance = instanceRepository.findAll();
 
         return new ResponseEntity<>(new InstanceList().data(instanceAssembler.toDTOs(allInstance)), HttpStatus.OK);

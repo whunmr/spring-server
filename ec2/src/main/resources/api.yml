@@ -29,11 +29,11 @@ paths:
       tags:
         - Instance
       parameters:
-        - name: X-region
-          in: header
+        - name: region
+          in: query
           description: 区域
           type: string
-          required: true
+          required: false
       responses:
         200:
           description: OK
