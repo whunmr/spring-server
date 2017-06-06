@@ -7,7 +7,7 @@ import java.util.Objects;
 /**
  * InstanceResponse
  */
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-06-06T09:43:49.758+08:00")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-06-06T11:44:45.355+08:00")
 
 public class InstanceResponse   {
     @JsonProperty("data")
@@ -70,4 +70,3 @@ public class InstanceResponse   {
         return o.toString().replace("\n", "\n    ");
     }
 }
-

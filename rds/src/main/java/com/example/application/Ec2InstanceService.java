@@ -1,6 +1,7 @@
 package com.example.application;
 
 import com.example.application.ec2.Ec2Instance;
+import com.example.application.ec2.InstanceResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
@@ -36,8 +37,9 @@ public class Ec2InstanceService {
 
         HttpEntity<String> request = new HttpEntity<String>(createEc2Request, headers);
 
-        ResponseEntity<Ec2Instance> ec2Instance = restTemplate.postForEntity("http://ec2/instances", request, Ec2Instance.class);
-        return ec2Instance.getBody();
+        ResponseEntity<InstanceResponse> ec2Instance = restTemplate.postForEntity("http://ec2/instances", request, InstanceResponse.class);
+
+        return ec2Instance.getBody().getData();
     }
 
 }

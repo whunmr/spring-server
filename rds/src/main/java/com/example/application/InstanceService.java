@@ -19,14 +19,16 @@ public class InstanceService {
 
         //TODO: make dto by assembler
         CreateDBInstanceResponse rsp = new CreateDBInstanceResponse();
-
-
-        DBInstance dbInstance = new DBInstance().instanceId(request.getInstanceId())
+        DBInstance dbInstance = new DBInstance().instanceId(instance.getId())
                                                 .instanceClass(request.getInstanceClass())
                                                 .engine(request.getEngine())
                                                 .port(request.getPort() == 0 ? 3261 : request.getPort())
                                                 .status("running");
+
+
+
         rsp.setInstance(dbInstance);
         return rsp;
     }
 }
+
