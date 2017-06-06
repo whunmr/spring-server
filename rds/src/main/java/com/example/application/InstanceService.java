@@ -17,18 +17,15 @@ public class InstanceService {
 
         Ec2Instance instance = ec2InstanceService.createInstance(request.getInstanceClass());
 
-        //TODO: make dto by assembler
         CreateDBInstanceResponse rsp = new CreateDBInstanceResponse();
+
         DBInstance dbInstance = new DBInstance().instanceId(instance.getId())
-                                                .instanceClass(request.getInstanceClass())
+                                                .instanceClass(instance.getFlavorId())
                                                 .engine(request.getEngine())
                                                 .port(request.getPort() == 0 ? 3261 : request.getPort())
-                                                .status("running");
-
-
+                                                .status(instance.getStatus());
 
         rsp.setInstance(dbInstance);
         return rsp;
     }
 }
-

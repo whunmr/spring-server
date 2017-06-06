@@ -22,8 +22,7 @@ public class InstancesFacade implements InstancesApiDelegate {
     public ResponseEntity<CreateDBInstanceResponse> createInstance(CreateDBInstanceRequest body) {
         //TODO: 增加对参数的校验
 
-        CreateDBInstanceResponse response = instanceService.createInstance(body);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(instanceService.createInstance(body));
     }
 
     @Override

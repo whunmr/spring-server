@@ -1,12 +1,14 @@
 package com.example.application;
 
-import com.example.application.ec2.*;
+import com.example.application.ec2.Ec2Instance;
+import com.example.application.ec2.InstanceCreateRequest;
+import com.example.application.ec2.InstanceResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 @Component
@@ -16,20 +18,16 @@ public class Ec2InstanceService {
     private RestTemplate restTemplate;
 
     public Ec2Instance createInstance(String instanceClass) {
-        InstanceCreateRequest createRequest = new InstanceCreateRequest()
-                .data(new InstanceCreateRequestData()
-                .attributes(new InstanceCreateRequestDataAttributes()
-                        .plan(new InstanceCreateRequestDataAttributesPlan()
-                                .flavorId(instanceClass))));
+        InstanceCreateRequest createRequest = InstanceCreateRequest.withFlavor(instanceClass);
 
-        MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
-        headers.add("Content-Type", "application/json");
-
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<InstanceCreateRequest> request = new HttpEntity<InstanceCreateRequest>(createRequest, headers);
 
-        ResponseEntity<InstanceResponse> ec2Instance = restTemplate.postForEntity("http://ec2/instances", request, InstanceResponse.class);
+        ResponseEntity<InstanceResponse> rsp = restTemplate.postForEntity("http://ec2/instances", request, InstanceResponse.class);
 
-        return ec2Instance.getBody().getData();
+        return rsp.getBody().getData();
     }
 
 }
+
