@@ -28,9 +28,8 @@ import static org.junit.Assert.assertNotNull;
  * Created by azhu on 06/06/2017.
  */
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
-@DirtiesContext
+//@RunWith(SpringRunner.class)
+//@SpringBootTest
 public class InstancesFacadeTest {
     DslPart requestData = new PactDslJsonBody()
             .object("data")
@@ -60,16 +59,16 @@ public class InstancesFacadeTest {
 
 
     @Rule
-    public PactProviderRuleMk2 rule = new PactProviderRuleMk2("EC2", "localhost",9002, this);
+    public PactProviderRuleMk2 rule = new PactProviderRuleMk2("EC2", "127.0.0.1",9002, this);
 
 //    @Autowired
 //    private EurekaDiscoveryClient client;
-
+//
 //    @Bean
 //    public EurekaDiscoveryClient getClient() {
-//        EurekaDiscoveryClient mock = mock(EurekaDiscoveryClient.class);
+//        EurekaDiscoveryClient mock = Mockito.mock(EurekaDiscoveryClient.class);
 //        LinkedList<ServiceInstance> t = new LinkedList<>();
-//        ServiceInstance serviceInstance = mock(ServiceInstance.class);
+//        ServiceInstance serviceInstance = Mockito.mock(ServiceInstance.class);
 //        when(serviceInstance.getHost()).thenReturn("localhost");
 //        when(serviceInstance.getPort()).thenReturn(9002);
 //        when(serviceInstance.getServiceId()).thenReturn("EC2");

@@ -15,7 +15,7 @@ import static io.restassured.RestAssured.given;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.DEFINED_PORT;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(webEnvironment = DEFINED_PORT, classes={Application.class})
+@SpringBootTest(webEnvironment = DEFINED_PORT, classes={Application.class}, properties = "")
 public class InstancesApiTest {
     @Before
     public void setup() {

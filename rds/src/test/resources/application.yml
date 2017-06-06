@@ -1,0 +1,14 @@
+eureka:
+  client:
+    enabled: false
+
+server:
+  ec2:
+    host: EC2
+
+EC2:
+  ribbon:
+    eureka:
+      enabled: false
+    listOfServers: 127.0.0.1:9002
+    ServerListRefreshInterval: 15000
