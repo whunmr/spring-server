@@ -13,19 +13,26 @@ public class Instance {
     private String instanceClass = null;
     private String engine = null;
     private Integer port = null;
+    private String availableZone = null;
+
+    @Column(name = "SOURCE_DBID")
+    private String sourceDBId = null;
     private String status = null;
 
     public Instance() {
     }
 
-    public Instance(String instanceId, String ec2InstanceId, String instanceClass, String engine, Integer port, String status) {
+    public Instance(String instanceId, String ec2InstanceId, String instanceClass, String engine, Integer port, String availableZone, String sourceDBId, String status) {
         this.instanceId = instanceId;
         this.ec2InstanceId = ec2InstanceId;
         this.instanceClass = instanceClass;
         this.engine = engine;
         this.port = port;
+        this.availableZone = availableZone;
+        this.sourceDBId = sourceDBId;
         this.status = status;
     }
+
 
     public String getInstanceId() {
         return instanceId;
@@ -45,6 +52,10 @@ public class Instance {
 
     public Integer getPort() {
         return port;
+    }
+
+    public String getAvailableZone() {
+        return availableZone;
     }
 
     public String getStatus() {

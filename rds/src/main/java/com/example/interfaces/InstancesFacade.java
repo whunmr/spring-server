@@ -25,19 +25,14 @@ public class InstancesFacade implements InstancesApiDelegate {
     @Autowired
     private InstanceRepository instanceRepository;
 
-    @Autowired
-    private SnapshotService snapshotService;
-
     @Override
     public ResponseEntity<CreateDBInstanceResponse> createInstance(CreateDBInstanceRequest body) {
-        return ResponseEntity.ok(instanceService.createInstance(body));
-    }
+        CreateDBInstanceResponse instance = instanceService.createInstance(body);
+        if (instance == null) {
+            return new ResponseEntity<>((CreateDBInstanceResponse) null, HttpStatus.BAD_REQUEST);
+        }
 
-    @Override
-    public ResponseEntity<DBSnapshot> createSnapshot(String instanceId) {
-        Snapshot snapshot = snapshotService.createSnapshotFor(instanceId);
-
-        return new ResponseEntity<>(SnapshotAssembler.toDTO(snapshot), HttpStatus.OK);
+        return ResponseEntity.ok(instance);
     }
 
     @Override
@@ -54,6 +49,18 @@ public class InstancesFacade implements InstancesApiDelegate {
     public ResponseEntity<List<DBInstance>> findInstances() {
         List<Instance> allInstance = instanceRepository.findAll();
         return new ResponseEntity<>(InstanceAssembler.toDTOs(allInstance), HttpStatus.OK);
+    }
+
+
+
+    @Autowired
+    private SnapshotService snapshotService;
+
+    @Override
+    public ResponseEntity<DBSnapshot> createSnapshot(String instanceId) {
+        Snapshot snapshot = snapshotService.createSnapshotFor(instanceId);
+
+        return new ResponseEntity<>(SnapshotAssembler.toDTO(snapshot), HttpStatus.OK);
     }
 
 }

@@ -1,6 +1,8 @@
 package com.example.interfaces;
 
-import au.com.dius.pact.consumer.*;
+import au.com.dius.pact.consumer.ConsumerPactBuilder;
+import au.com.dius.pact.consumer.Pact;
+import au.com.dius.pact.consumer.PactVerificationResult;
 import au.com.dius.pact.consumer.dsl.DslPart;
 import au.com.dius.pact.consumer.dsl.PactDslJsonBody;
 import au.com.dius.pact.consumer.dsl.PactDslWithProvider;
@@ -9,46 +11,26 @@ import au.com.dius.pact.model.PactSpecVersion;
 import au.com.dius.pact.model.RequestResponsePact;
 import io.swagger.model.CreateDBInstanceRequest;
 import io.swagger.model.CreateDBInstanceResponse;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.ws.rs.HttpMethod;
-
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 import static au.com.dius.pact.consumer.ConsumerPactRunnerKt.runConsumerTest;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-/**
- * Created by azhu on 06/06/2017.
- */
-
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 public class InstancesFacadeTest {
-//    DslPart requestData = new PactDslJsonBody()
-//            .object("data")
-//                .object("attributes")
-//                    .stringValue("name", "create aa instance")
-//                    .object("plan")
-//                        .stringValue("image_id", "image____id__3")
-//                        .stringValue("flavor_id", "c1.medium")
-//                        .stringValue("az", "SZ")
-//                    .closeObject()
-//                .closeObject()
-//            .closeObject()
-//            .close();
+
+    @Autowired
+    private InstancesFacade instancesFacade;
 
     DslPart requestData = new PactDslJsonBody()
             .object("data")
@@ -73,13 +55,6 @@ public class InstancesFacadeTest {
                                         .stringType("flavor_id")
                                     .closeObject()
                                 .closeObject().close();
-
-
-//    @Rule
-//    public PactProviderRuleMk2 rule = new PactProviderRuleMk2("EC2", "localhost",9002, this);
-
-    @Autowired
-    private InstancesFacade instancesFacade;
 
     @Pact(provider = "EC2", consumer = "RDS")
     protected RequestResponsePact create_ec2_instance_when_rds_create_db_instance(PactDslWithProvider builder) {

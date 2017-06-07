@@ -41,6 +41,8 @@ paths:
           description: Unauthorized
         409: #TODO: 当资源已经存在时返回409 Conflict，并在response中返回当前资源的信息
           description: Resource already exists
+        400:
+          description: Bad Request
 
     get:
       summary: Get RDS instances list
@@ -111,11 +113,18 @@ definitions:
       port:
         type: integer
         description: '<p>The port number on which the database accepts connections.</p>'
+      availableZone:
+        type: string
+        description: 'available zone of the instance to create'
+      sourceDBId:
+        type: string
+        description: 'source db identifier from which this instances replicates'
     required:
       - instanceId
       - instanceClass
       - engine
       - port
+      - availableZone
     type: object
 
   CreateDBInstanceResponse:
@@ -139,6 +148,9 @@ definitions:
       port:
         type: integer
         description: 'Specifies the port that the DB instance listens on. If the DB instance is part of a DB cluster, this can be a different port than the DB cluster port.'
+      availableZone:
+        type: string
+        description: 'available zone of the instance to create'
       status:
         type: string
         description: Specifies the current state of this database.
