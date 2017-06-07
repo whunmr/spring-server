@@ -76,9 +76,12 @@ paths:
           description: DBInstanceNotFoundFault
           schema:
             $ref: '#/definitions/DBInstanceNotFoundFault'
+
   /instances/{instanceId}/snapshots:
     post:
       summary: create a snapshot of the specified RDS instance
+      tags:
+        - snapshot
       operationId: createSnapshot
       parameters:
         - in: path
@@ -91,7 +94,6 @@ paths:
           description: Success
           schema:
             $ref: '#/definitions/DBSnapshot'
-
 
 definitions:
   CreateDBInstanceRequest:
@@ -171,3 +173,9 @@ definitions:
         type: string
         description: Contains a user-supplied database identifier. This identifier is the unique key that identifies a DB instance.
     type: object
+
+#TODO: 0. 写一个按指定instanceId查询某个instance信息的uri接口
+#TODO: 1. 为definitions增加example
+#TODO: 2. 为CreateDBInstanceRequest中的instanceId增加长度校验长度在[3，10]之间
+#TODO: 3. 为/instances/{instanceId}和/instances/{instanceId}/snapshots中的instanceId参数提取到parameters中.
+          参考：https://apihandyman.io/writing-openapi-swagger-specification-tutorial-part-3-simplifying-specification-file/

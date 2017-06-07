@@ -11,7 +11,7 @@ A repository for a blog on how Spring Cloud promotes resilient service-to-servic
        a. 创建RDS实例， 参数包括用户自定义RDS实例名称， 运行实例类型 （db.t1.micro | db.m1.small | db.m1.medium | db.m1.large），数据库引擎（mysql, oracle, sqlserver, postgres), 数据库监听端口
        b. 查询当前所有的RDS实例
        c. 根据传入的RDS实例名称， 查找相应的实例信息
-       
+       d. 传入指定的RDS实例名称，为其创建备份
     
       EC2：
        a. //TODO: 需求待补充
