@@ -1,4 +1,6 @@
-package com.tw.dddsample.domain;
+package com.tw.dddsample.domain.instance;
+
+import com.tw.dddsample.domain.instance.Instance;
 
 import java.util.List;
 

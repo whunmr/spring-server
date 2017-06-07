@@ -1,9 +1,8 @@
-package com.tw.dddsample.domain;
+package com.tw.dddsample.domain.instance;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Transient;
+import com.tw.dddsample.domain.flavor.Flavor;
+
+import javax.persistence.*;
 
 /**
  * Created by azhu on 25/05/2017.
@@ -11,6 +10,7 @@ import javax.persistence.Transient;
 @Entity
 public class Instance {
     public static final String DEFAULT_REGION = "SZ";
+
     public String getInstanceId() {
         return instanceId;
     }
@@ -19,19 +19,23 @@ public class Instance {
     private String instanceId;
 
     private String name;
+
     private String imageId;
     private String flavorId;
-    @Transient
-    private Region region;
     private String az;
+    @ManyToOne(fetch = FetchType.LAZY, optional = true)
+    private Flavor flavor;
 
     @Column(name = "STATUS")
     private VMStatus  vmStatus;
 
+    public void setFlavor(Flavor flavor) {
+        this.flavor = flavor;
+    }
+
     public enum VMStatus {Pending, Running, ShuttingDown, Rebooting, Terminated}
 
     public Instance() {
-        region = new Region(DEFAULT_REGION);
     }
 
     public Instance(String name, String imageId, String flavorId) {
@@ -53,7 +57,7 @@ public class Instance {
     }
 
     //TODO how notify resource context to retire instance physically
-    public boolean syncStatus(VMStatus vmStatus) {
+    public boolean moveStatusTo(VMStatus vmStatus) {
         if (vmStatus == VMStatus.Running) {
             if (this.vmStatus == VMStatus.Pending) {
                 this.vmStatus = VMStatus.Running;

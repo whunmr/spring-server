@@ -1,6 +1,6 @@
 package com.tw.dddsample.interfaces.assembler;
 
-import com.tw.dddsample.domain.Instance;
+import com.tw.dddsample.domain.instance.Instance;
 import io.swagger.model.InstanceAttributes;
 import io.swagger.model.InstanceCreateRequest;
 
@@ -22,6 +22,7 @@ public class InstanceAssembler {
         if (status != null) {
             attributes.setStatus(status.toString());
         }
+
         instance.setAttributes(attributes);
         return instance;
     }

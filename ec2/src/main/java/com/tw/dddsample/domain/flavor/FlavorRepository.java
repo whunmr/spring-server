@@ -1,4 +1,4 @@
-package com.tw.dddsample.domain;
+package com.tw.dddsample.domain.flavor;
 
 /**
  * Created by azhu on 27/05/2017.
@@ -6,4 +6,6 @@ package com.tw.dddsample.domain;
 public interface FlavorRepository {
 
     public Flavor findFlavor(String flavorId);
+
+    public Flavor save(Flavor flavor);
 }

@@ -1,8 +1,8 @@
 package com.tw.dddsample.interfaces;
 
 import com.tw.dddsample.application.InstanceService;
-import com.tw.dddsample.domain.Instance;
-import com.tw.dddsample.domain.InstanceRepository;
+import com.tw.dddsample.domain.instance.Instance;
+import com.tw.dddsample.domain.instance.InstanceRepository;
 import com.tw.dddsample.interfaces.assembler.InstanceAssembler;
 import io.swagger.api.InstancesApiDelegate;
 import io.swagger.model.InstanceCreateRequest;
@@ -20,6 +20,7 @@ public class InstancesFacade implements InstancesApiDelegate {
 
     @Autowired
     private InstanceService instanceService;
+
     @Autowired
     private InstanceRepository instanceRepository;
 
@@ -36,6 +37,7 @@ public class InstancesFacade implements InstancesApiDelegate {
 
     @Override
     public ResponseEntity<InstanceResponse> createInstances(InstanceCreateRequest body) {
+
         Instance createdInstance = instanceService.createInstance(new InstanceAssembler().fromDTO(body));
 
         return new ResponseEntity<>(new InstanceResponse().data(instanceAssembler.toDTO(createdInstance)), HttpStatus.OK);

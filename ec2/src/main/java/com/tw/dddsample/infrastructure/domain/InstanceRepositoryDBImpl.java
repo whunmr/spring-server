@@ -1,7 +1,7 @@
 package com.tw.dddsample.infrastructure.domain;
 
-import com.tw.dddsample.domain.Instance;
-import com.tw.dddsample.domain.InstanceRepository;
+import com.tw.dddsample.domain.instance.Instance;
+import com.tw.dddsample.domain.instance.InstanceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.stereotype.Component;

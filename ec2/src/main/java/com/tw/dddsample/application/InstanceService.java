@@ -1,8 +1,8 @@
 package com.tw.dddsample.application;
 
-import com.tw.dddsample.domain.FlavorRepository;
-import com.tw.dddsample.domain.Instance;
-import com.tw.dddsample.domain.InstanceRepository;
+import com.tw.dddsample.domain.flavor.FlavorRepository;
+import com.tw.dddsample.domain.instance.Instance;
+import com.tw.dddsample.domain.instance.InstanceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -13,14 +13,9 @@ import org.springframework.stereotype.Component;
 public class InstanceService {
 
     @Autowired
-    private RegionSelectionService regionSelectionService;
-    @Autowired
     private InstanceRepository instanceRepository;
-    @Autowired
-    private FlavorRepository flavorRepository;
 
     public Instance createInstance(Instance instance) {
-        instance.setAZ(regionSelectionService.selectAZ(instance.getAZ(), flavorRepository.findFlavor(instance.getFlavorId())));
         return instanceRepository.save(instance);
     }
 

@@ -1,6 +1,7 @@
 package com.tw.dddsample.domain;
 
 
+import com.tw.dddsample.domain.instance.Instance;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -38,7 +39,7 @@ public class InstanceTest {
         Instance instance = createAnInstance();
         instance.launch();
 
-        instance.syncStatus(Instance.VMStatus.Running);
+        instance.moveStatusTo(Instance.VMStatus.Running);
 
         assertThat(instance.status(), is(Instance.VMStatus.Running));
     }
@@ -47,7 +48,7 @@ public class InstanceTest {
     public void should_not_be_running_automatically_before_launch() {
         Instance anInstance = createAnInstance();
 
-        boolean isAutoActived = anInstance.syncStatus(Instance.VMStatus.Running);
+        boolean isAutoActived = anInstance.moveStatusTo(Instance.VMStatus.Running);
 
         assertThat(isAutoActived, is(false));
     }
@@ -78,7 +79,7 @@ public class InstanceTest {
         runningInstance.reboot();
         Instance rebootingInstance = runningInstance;
 
-        boolean isAutoRunning = rebootingInstance.syncStatus(Instance.VMStatus.Running);
+        boolean isAutoRunning = rebootingInstance.moveStatusTo(Instance.VMStatus.Running);
 
         assertThat(isAutoRunning, is(true));
         assertThat(rebootingInstance.status(), is(Instance.VMStatus.Running));
@@ -100,7 +101,7 @@ public class InstanceTest {
         runningInstance.terminate();
         Instance shuttingDownInstance = runningInstance;
 
-        boolean isTerminated = shuttingDownInstance.syncStatus(Instance.VMStatus.Terminated);
+        boolean isTerminated = shuttingDownInstance.moveStatusTo(Instance.VMStatus.Terminated);
         assertThat(isTerminated, is(true));
         assertThat(shuttingDownInstance.status(), is(Instance.VMStatus.Terminated));
     }
@@ -112,7 +113,7 @@ public class InstanceTest {
     private Instance createRunningInstance() {
         Instance instance = createAnInstance();
         instance.launch();
-        instance.syncStatus(Instance.VMStatus.Running);
+        instance.moveStatusTo(Instance.VMStatus.Running);
         return instance;
     }
 
