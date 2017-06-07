@@ -57,28 +57,6 @@ paths:
             items:
               $ref: '#/definitions/DBInstance'
 
-  /instances/{instanceId}:
-    get:
-      summary: Get info of instanceId
-      tags:
-        - instance
-      operationId: findInstance
-      parameters:
-        - in: path
-          description: instanceId
-          name: instanceId
-          type: string
-          required: true
-      responses:
-        200:
-          description: Success
-          schema:
-            $ref: '#/definitions/DBInstance'
-        404: #TODO: 代码中实现404返回值
-          description: DBInstanceNotFoundFault
-          schema:
-            $ref: '#/definitions/DBInstanceNotFoundFault'
-
   /instances/{instanceId}/snapshots:
     post:
       summary: create a snapshot of the specified RDS instance
