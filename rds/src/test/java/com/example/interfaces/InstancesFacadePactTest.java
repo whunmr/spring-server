@@ -39,9 +39,8 @@ public class InstancesFacadePactTest {
     DslPart responseData = new PactDslJsonBody().object("data")
                                     .stringValue("id", "fake_ec2_instance_uuid")
                                     .stringMatcher("id", "[0-9a-zA-Z\\-]+")
-                                    .stringValue("type", "c1.medium")
                                     .object("attributes")
-                                        .stringType("flavor_id")
+                                        .stringValue("flavor_id", "c1.medium")
                                     .closeObject()
                                 .closeObject().close();
 

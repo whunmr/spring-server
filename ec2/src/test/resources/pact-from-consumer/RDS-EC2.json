@@ -32,19 +32,15 @@
                 "body": {
                     "data": {
                         "attributes": {
-                            "flavor_id": "GMwkHqHLuThgffZPvKTx"
+                            "flavor_id": "c1.medium"
                         },
-                        "id": "HF",
-                        "type": "c1.medium"
+                        "id": "---3Bo-"
                     }
                 },
                 "matchingRules": {
                     "$.body.data.id": {
                         "regex": "[0-9a-zA-Z\\-]+",
                         "match": "regex"
-                    },
-                    "$.body.data.attributes.flavor_id": {
-                        "match": "type"
                     }
                 }
             }
