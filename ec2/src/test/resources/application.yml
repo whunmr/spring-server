@@ -1,0 +1,9 @@
+eureka:
+  client:
+    enabled: false
+
+EC2:
+  ribbon:
+    eureka:
+      enabled: false
+    listOfServers: localhost:9002
