@@ -174,8 +174,16 @@ definitions:
         description: Contains a user-supplied database identifier. This identifier is the unique key that identifies a DB instance.
     type: object
 
-#TODO: 0. 写一个按指定instanceId查询某个instance信息的uri接口
-#TODO: 1. 为definitions增加example
-#TODO: 2. 为CreateDBInstanceRequest中的instanceId增加长度校验长度在[3，10]之间
-#TODO: 3. 为/instances/{instanceId}和/instances/{instanceId}/snapshots中的instanceId参数提取到parameters中.
-          参考：https://apihandyman.io/writing-openapi-swagger-specification-tutorial-part-3-simplifying-specification-file/
+#TODO: [1.4] 0. 写一个按指定instanceId查询某个instance信息的uri接口
+#TODO: [1.4] 1. 在rds目录下调用 `mvn compile' 生成代码到target目录下
+#TODO: [1.4] 2. 使代码编译通过，运行`mvn clean spring-boot:run'，并在http://localhost:9000/api-docs中查看动态api文档
+#TODO: [1.4] 3. 为definitions增加example
+#TODO: [1.4] 4. 为CreateDBInstanceRequest中的instanceId增加长度校验长度在[3，10]之间
+#TODO: [1.4] 5. 为/instances/{instanceId}和/instances/{instanceId}/snapshots中的instanceId参数提取到parameters中.
+#         可参考：https://apihandyman.io/writing-openapi-swagger-specification-tutorial-part-3-simplifying-specification-file/
+#
+#参考：
+#      http://openapi-specification-visual-documentation.apihandyman.io/
+#工具：
+#      swagger_ui:     https://github.com/swagger-api/swagger-ui/archive/v3.0.12.zip
+#      swagger_editor: http://editor.swagger.io/
