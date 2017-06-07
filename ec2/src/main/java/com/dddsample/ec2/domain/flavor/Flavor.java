@@ -28,7 +28,7 @@ public class Flavor {
 
     public Flavor(String flavorId, int vCPU, float memInGiB) {
         mode = Mode.create(flavorId.substring(0, flavorId.indexOf(".")));
-        mode.validate(vCPU, memInGiB);
+        //TODO: to validate the proportion of vCPU&MEM to keep consistence
         this.flavorId = flavorId;
         this.vCPU = vCPU;
         this.memInGiB = memInGiB;
@@ -53,20 +53,8 @@ public class Flavor {
 
     public enum Mode {
         General {
-            @Override
-            public float proportion() {
-                return 1/3.75f;
-            }
         }, Compute {
-            @Override
-            public float proportion() {
-                return 2/3.75f;
-            }
         }, Memory {
-            @Override
-            public float proportion() {
-                return 2/15.25f;
-            }
         };
 
         public static Mode create(String modeName) {
@@ -80,13 +68,6 @@ public class Flavor {
             throw new InvalidParameterException("The flavor id is invalid format!");
         }
 
-        protected abstract float proportion();
-
-        public void validate(int vCPU, float memInGiB) {
-            if (vCPU / memInGiB != proportion()) {
-                throw new InvalidParameterException("The proportion of vCPU/Memory is not consistent with mode!");
-            }
-        }
     }
 
 
