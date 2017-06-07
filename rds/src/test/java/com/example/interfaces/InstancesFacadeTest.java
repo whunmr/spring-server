@@ -1,11 +1,11 @@
 package com.example.interfaces;
 
-import au.com.dius.pact.consumer.Pact;
-import au.com.dius.pact.consumer.PactProviderRuleMk2;
-import au.com.dius.pact.consumer.PactVerification;
+import au.com.dius.pact.consumer.*;
 import au.com.dius.pact.consumer.dsl.DslPart;
 import au.com.dius.pact.consumer.dsl.PactDslJsonBody;
 import au.com.dius.pact.consumer.dsl.PactDslWithProvider;
+import au.com.dius.pact.model.MockProviderConfig;
+import au.com.dius.pact.model.PactSpecVersion;
 import au.com.dius.pact.model.RequestResponsePact;
 import io.swagger.model.CreateDBInstanceRequest;
 import io.swagger.model.CreateDBInstanceResponse;
@@ -13,6 +13,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.ws.rs.HttpMethod;
 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+import static au.com.dius.pact.consumer.ConsumerPactRunnerKt.runConsumerTest;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -28,8 +34,8 @@ import static org.junit.Assert.assertNotNull;
  * Created by azhu on 06/06/2017.
  */
 
-//@RunWith(SpringRunner.class)
-//@SpringBootTest
+@RunWith(SpringRunner.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 public class InstancesFacadeTest {
     DslPart requestData = new PactDslJsonBody()
             .object("data")
@@ -58,8 +64,8 @@ public class InstancesFacadeTest {
                                 .closeObject().close();
 
 
-    @Rule
-    public PactProviderRuleMk2 rule = new PactProviderRuleMk2("EC2", "127.0.0.1",9002, this);
+//    @Rule
+//    public PactProviderRuleMk2 rule = new PactProviderRuleMk2("EC2", "localhost",9002, this);
 
 //    @Autowired
 //    private EurekaDiscoveryClient client;
@@ -94,8 +100,8 @@ public class InstancesFacadeTest {
                 .toPact();
     }
 
-    @Test
-    @PactVerification("EC2")
+//    @Test
+//    @PactVerification("EC2")
     public void should_create_an_mysql_db_instance_successfully() {
         ResponseEntity<CreateDBInstanceResponse> response = instancesFacade.createInstance(new CreateDBInstanceRequest().instanceClass("c1.medium").engine("MySQL"));
         assertEquals(response.getStatusCode(), HttpStatus.OK);
@@ -104,5 +110,27 @@ public class InstancesFacadeTest {
         assertNotNull(response.getBody().getInstance().getInstanceId());
 
     }
+
+    @Test
+    public void testPact() {
+        PactDslWithProvider pactDslWithProvider = ConsumerPactBuilder
+                .consumer("Some Consumer")
+                .hasPactWith("Some Provider");
+
+        RequestResponsePact pact = create_ec2_instance_when_rds_create_db_instance(pactDslWithProvider);
+
+        MockProviderConfig config = MockProviderConfig.createDefault("localhost", PactSpecVersion.V2);
+        config.setPort(9002);
+        PactVerificationResult result = runConsumerTest(pact, config, mockServer -> {
+            should_create_an_mysql_db_instance_successfully();
+        });
+
+        if (result instanceof PactVerificationResult.Error) {
+            throw new RuntimeException(((PactVerificationResult.Error)result).getError());
+        }
+
+        assertEquals(PactVerificationResult.Ok.INSTANCE, result);
+    }
+
 
 }

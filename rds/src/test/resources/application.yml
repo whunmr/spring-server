@@ -10,5 +10,4 @@ EC2:
   ribbon:
     eureka:
       enabled: false
-    listOfServers: 127.0.0.1:9002
-    ServerListRefreshInterval: 15000
+    listOfServers: localhost:9002
