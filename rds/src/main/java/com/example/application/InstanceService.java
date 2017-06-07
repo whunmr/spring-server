@@ -22,13 +22,14 @@ public class InstanceService {
 
         Ec2Instance ec2Instance = ec2InstanceService.createInstance(req.getInstanceClass());
 
+        //call db installation and setup routine
+
         Instance instance = new Instance( req.getInstanceId()
                                         , ec2Instance.getId()
                                         , req.getInstanceClass()
                                         , req.getEngine()
                                         , req.getPort()
                                         , ec2Instance.getStatus());
-
         instanceRepository.save(instance);
 
         CreateDBInstanceResponse rsp = new CreateDBInstanceResponse();

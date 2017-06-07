@@ -1,9 +1,12 @@
 package com.example.interfaces;
 
 import com.example.application.InstanceService;
+import com.example.application.SnapshotService;
 import com.example.domain.Instance;
 import com.example.domain.InstanceRepository;
+import com.example.domain.Snapshot;
 import com.example.interfaces.assembler.InstanceAssembler;
+import com.example.interfaces.assembler.SnapshotAssembler;
 import io.swagger.api.InstancesApiDelegate;
 import io.swagger.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +25,19 @@ public class InstancesFacade implements InstancesApiDelegate {
     @Autowired
     private InstanceRepository instanceRepository;
 
+    @Autowired
+    private SnapshotService snapshotService;
+
     @Override
     public ResponseEntity<CreateDBInstanceResponse> createInstance(CreateDBInstanceRequest body) {
         return ResponseEntity.ok(instanceService.createInstance(body));
+    }
+
+    @Override
+    public ResponseEntity<DBSnapshot> createSnapshot(String instanceId) {
+        Snapshot snapshot = snapshotService.createSnapshotFor(instanceId);
+
+        return new ResponseEntity<>(SnapshotAssembler.toDTO(snapshot), HttpStatus.OK);
     }
 
     @Override

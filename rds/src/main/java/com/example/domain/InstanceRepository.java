@@ -4,9 +4,9 @@ import java.util.List;
 
 public interface InstanceRepository {
 
-    public Instance save(Instance instance);
+    Instance save(Instance instance);
 
-    public List<Instance> findAll();
+    List<Instance> findAll();
 
-    public Instance find(String instanceId);
+    Instance find(String instanceId);
 }

@@ -16,6 +16,8 @@ schemes:
 tags:
   - name: instance
     description: "API about RDS Ec2Instance"
+  - name: snapshot
+    description: "API about RDS snapshot"
 
 paths:
   /instances:
@@ -74,6 +76,22 @@ paths:
           description: DBInstanceNotFoundFault
           schema:
             $ref: '#/definitions/DBInstanceNotFoundFault'
+  /instances/{instanceId}/snapshots:
+    post:
+      summary: create a snapshot of the specified RDS instance
+      operationId: createSnapshot
+      parameters:
+        - in: path
+          description: instanceId
+          name: instanceId
+          type: string
+          required: true
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: '#/definitions/DBSnapshot'
+
 
 definitions:
   CreateDBInstanceRequest:
@@ -141,4 +159,15 @@ definitions:
   DBInstanceNotFoundFault:
     description: ' <i>DBInstanceIdentifier</i> does not refer to an existing DB instance. '
     properties: {}
+    type: object
+
+  DBSnapshot:
+    description: '<p>Contains the result of a successful invocation of the following actions:</p> <ul> <li> <p> <a>CreateDBInstance</a> </p> </li> <li> <p> <a>DeleteDBInstance</a> </p> </li> <li> <p> <a>ModifyDBInstance</a> </p> </li> </ul> <p>This data type is used as a response element in the <a>DescribeDBInstances</a> action.</p>'
+    properties:
+      snapshotId:
+        type: string
+        description: Contains generated snapshot identifier.
+      instanceId:
+        type: string
+        description: Contains a user-supplied database identifier. This identifier is the unique key that identifies a DB instance.
     type: object
