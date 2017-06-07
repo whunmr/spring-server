@@ -1,12 +1,8 @@
 package com.example.interfaces;
 
 import au.com.dius.pact.consumer.ConsumerPactBuilder;
-import au.com.dius.pact.consumer.PactTestRun;
-import au.com.dius.pact.consumer.PactVerificationResult;
 import au.com.dius.pact.consumer.dsl.DslPart;
 import au.com.dius.pact.consumer.dsl.PactDslJsonBody;
-import au.com.dius.pact.model.MockProviderConfig;
-import au.com.dius.pact.model.PactSpecVersion;
 import au.com.dius.pact.model.RequestResponsePact;
 import io.swagger.model.CreateDBInstanceRequest;
 import io.swagger.model.CreateDBInstanceResponse;
@@ -20,7 +16,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.ws.rs.HttpMethod;
 
-import static au.com.dius.pact.consumer.ConsumerPactRunnerKt.runConsumerTest;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 

@@ -8,11 +8,6 @@
         <outputRelativeToContentRoot value="true" />
         <module name="ec2" />
         <module name="eureka-service" />
-      </profile>
-      <profile name="Annotation profile for service-registration-and-discovery" enabled="true">
-        <sourceOutputDir name="../ec2/target/generated-sources/annotations" />
-        <sourceTestOutputDir name="../ec2/target/generated-test-sources/test-annotations" />
-        <outputRelativeToContentRoot value="true" />
         <module name="rds" />
       </profile>
     </annotationProcessing>
