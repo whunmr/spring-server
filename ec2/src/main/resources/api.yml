@@ -79,7 +79,7 @@ paths:
           schema:
             $ref: '#/definitions/InstanceCreateRequest'
       responses:
-        202:
+        200:
           description: Accepted
           headers:
             Content-Type:
@@ -131,47 +131,6 @@ paths:
               description: the response media type
           schema:
             $ref: '#/definitions/failure'
-  /instances/{instanceId}:
-    get:
-          summary: 获取实例基本信息
-          operationId: findInstance
-          tags:
-            - Instance
-          parameters:
-            - name: instanceId
-              type: string
-              in: path
-              description: 实例唯一标识
-              required: true
-          responses:
-            200:
-              description: OK
-              headers:
-                Content-Type:
-                  type: string
-                  description: the response media type
-              schema:
-                $ref: '#/definitions/InstanceResponse'
-            401:
-              description: Unauthorized
-              headers:
-                Content-Type:
-                  type: string
-                  description: the response media type
-            406:
-              description: Not Acceptable
-              headers:
-                Content-Type:
-                  type: string
-                  description: the response media type
-            500:
-              description: Unexpected error
-              headers:
-                Content-Type:
-                  type: string
-                  description: the response media type
-              schema:
-                $ref: '#/definitions/failure'
   /instances/{instanceId}/action:
     put:
       summary: 对实例进行操作
@@ -211,8 +170,7 @@ paths:
           schema:
             $ref: '#/definitions/FlavorCreateRequest'
       responses:
-        202:
-          description: Accepted
+        200:
           headers:
             Content-Type:
               type: string
