@@ -192,9 +192,10 @@ definitions:
 #TODO: [1.4] 3. 为definitions增加example
 #TODO: [1.4] 4. 为CreateDBInstanceRequest中的instanceId增加长度校验长度在[3，10]之间
 #TODO: [1.4] 5. 为/instances/{instanceId}和/instances/{instanceId}/snapshots中的instanceId参数提取到parameters中.
-#         可参考：https://apihandyman.io/writing-openapi-swagger-specification-tutorial-part-3-simplifying-specification-file/
+#               可参考：https://apihandyman.io/writing-openapi-swagger-specification-tutorial-part-3-simplifying-specification-file/
 #
 #参考：
+#      https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md
 #      http://openapi-specification-visual-documentation.apihandyman.io/
 #工具：
 #      swagger_ui:     https://github.com/swagger-api/swagger-ui/archive/v3.0.12.zip
