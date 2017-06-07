@@ -36,7 +36,7 @@ public class InstanceAssembler {
     }
 
     public Instance fromDTO(InstanceCreateRequest creationRequest) {
-        Instance instance = new Instance(creationRequest.getData().getAttributes().getName(), creationRequest.getData().getAttributes().getPlan().getImageId(), creationRequest.getData().getAttributes().getPlan().getFlavorId());
+        Instance instance = new Instance(creationRequest.getData().getAttributes().getPlan().getFlavorId());
         instance.setAZ(creationRequest.getData().getAttributes().getPlan().getAz());
         return instance;
     }

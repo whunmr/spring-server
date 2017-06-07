@@ -1,15 +1,14 @@
 package com.tw.dddsample.domain.instance;
 
-import com.tw.dddsample.domain.flavor.Flavor;
-
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
 /**
  * Created by azhu on 25/05/2017.
  */
 @Entity
 public class Instance {
-    public static final String DEFAULT_REGION = "SZ";
 
     public String getInstanceId() {
         return instanceId;
@@ -18,29 +17,18 @@ public class Instance {
     @Id
     private String instanceId;
 
-    private String name;
-
-    private String imageId;
     private String flavorId;
     private String az;
-    @ManyToOne(fetch = FetchType.LAZY, optional = true)
-    private Flavor flavor;
 
     @Column(name = "STATUS")
-    private VMStatus  vmStatus;
-
-    public void setFlavor(Flavor flavor) {
-        this.flavor = flavor;
-    }
+    private VMStatus  vmStatus = VMStatus.Pending;
 
     public enum VMStatus {Pending, Running, ShuttingDown, Rebooting, Terminated}
 
     public Instance() {
     }
 
-    public Instance(String name, String imageId, String flavorId) {
-        this.name = name;
-        this.imageId = imageId;
+    public Instance(String flavorId) {
         this.flavorId = flavorId;
     }
 
