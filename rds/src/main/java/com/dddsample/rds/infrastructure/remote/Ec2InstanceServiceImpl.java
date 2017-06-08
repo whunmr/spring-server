@@ -19,10 +19,6 @@ public class Ec2InstanceServiceImpl implements Ec2InstanceService {
     @Autowired
     private RestTemplate restTemplate;
 
-
-    @Value("${server.ec2.host}")
-    private String ec2Host;
-
     public Ec2Instance createInstance(String instanceClass) {
         InstanceCreateRequest createRequest = InstanceCreateRequest.withFlavor(instanceClass);
 
@@ -30,8 +26,7 @@ public class Ec2InstanceServiceImpl implements Ec2InstanceService {
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<InstanceCreateRequest> request = new HttpEntity<InstanceCreateRequest>(createRequest, headers);
 
-
-        ResponseEntity<InstanceResponse> rsp = restTemplate.postForEntity("http://"+ec2Host+"/instances", request, InstanceResponse.class);
+        ResponseEntity<InstanceResponse> rsp = restTemplate.postForEntity("http://EC2/instances", request, InstanceResponse.class);
 
         return rsp.getBody().getData();
     }
