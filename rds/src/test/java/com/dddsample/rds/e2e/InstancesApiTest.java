@@ -1,6 +1,9 @@
 package com.dddsample.rds.e2e;
 
 import io.restassured.RestAssured;
+import io.swagger.model.DBInstance;
+import net.sf.json.JSON;
+import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,6 +15,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.io.IOException;
 
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.DEFINED_PORT;
 
 @RunWith(SpringRunner.class)
@@ -41,4 +47,24 @@ public class InstancesApiTest {
                 .when().get("/instances")
                 .then().statusCode(200);
     }
+    // run specific test:>> mvn -Dtest=*InstancesApiTest* clean test
+    @Test
+    public void should_able_to__create_instance_by_post() throws IOException {
+        JSONObject request = new JSONObject()
+                .put("instanceId","mybox")
+                .put("engine","mysql")
+                .put("instanceClass","t1.micro")
+                .put("port","9999")
+                .put("availableZone","sz");
+
+
+                given()
+                    .contentType("application/json")
+                    .body(request.toString())
+                .when()
+                    .post("/instances")
+                .then()
+                    .body("instance.instanceId", equalTo("mybox"));
+    }
+
 }
