@@ -27,12 +27,13 @@ public class InstancesFacade implements InstancesApiDelegate {
 
     @Override
     public ResponseEntity<CreateDBInstanceResponse> createInstance(CreateDBInstanceRequest body) {
-        CreateDBInstanceResponse instance = instanceService.createInstance(body);
+        Instance instance = instanceService.createInstance(body);
         if (instance == null) {
-            return new ResponseEntity<>((CreateDBInstanceResponse) null, HttpStatus.BAD_REQUEST);
+            return ResponseEntity.badRequest().body(null);
         }
 
-        return ResponseEntity.ok(instance);
+        DBInstance dbInstance = InstanceAssembler.toDTO(instance);
+        return ResponseEntity.ok(new CreateDBInstanceResponse().instance(dbInstance));
     }
 
     @Override
@@ -42,7 +43,7 @@ public class InstancesFacade implements InstancesApiDelegate {
             return new ResponseEntity<>((DBInstance) null, HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<>(InstanceAssembler.toDTO(instance), HttpStatus.OK);
+        return ResponseEntity.ok(InstanceAssembler.toDTO(instance));
     }
 
     @Override

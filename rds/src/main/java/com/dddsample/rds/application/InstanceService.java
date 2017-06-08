@@ -23,7 +23,7 @@ public class InstanceService {
     private ReplicaValidateService replicaValidateService;
 
 
-    public CreateDBInstanceResponse createInstance(CreateDBInstanceRequest req) {
+    public Instance createInstance(CreateDBInstanceRequest req) {
 
         boolean isCreatingReplicaInstance = req.getSourceDBId() != null;
         if (isCreatingReplicaInstance) {
@@ -45,9 +45,7 @@ public class InstanceService {
                                         , ec2Instance.getStatus());
         instanceRepository.save(instance);
 
-        CreateDBInstanceResponse rsp = new CreateDBInstanceResponse();
-        rsp.setInstance(InstanceAssembler.toDTO(instance));
-        return rsp;
+        return instance;
     }
 
 
