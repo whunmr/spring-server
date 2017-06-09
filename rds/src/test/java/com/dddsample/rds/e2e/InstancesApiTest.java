@@ -17,6 +17,7 @@ import java.io.IOException;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.DEFINED_PORT;
 
@@ -47,24 +48,25 @@ public class InstancesApiTest {
                 .when().get("/instances")
                 .then().statusCode(200);
     }
+
     // run specific test:>> mvn -Dtest=*InstancesApiTest* clean test
     @Test
     public void should_able_to__create_instance_by_post() throws IOException {
         JSONObject request = new JSONObject()
-                .put("instanceId","mybox")
-                .put("engine","mysql")
-                .put("instanceClass","t1.micro")
-                .put("port","9999")
-                .put("availableZone","sz");
+            .put("instanceId","mybox")
+            .put("engine","mysql")
+            .put("instanceClass","t1.micro")
+            .put("port","9999")
+            .put("availableZone","sz");
 
 
-                given()
-                    .contentType("application/json")
-                    .body(request.toString())
-                .when()
-                    .post("/instances")
-                .then()
-                    .body("instance.instanceId", equalTo("mybox"));
+        given()
+            .contentType("application/json")
+            .body(request.toString())
+        .when()
+            .post("/instances")
+        .then()
+            .body("instance.ec2InstanceId", is(notNullValue()));
     }
 
 }

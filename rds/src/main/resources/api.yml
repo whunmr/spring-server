@@ -154,6 +154,9 @@ definitions:
       status:
         type: string
         description: Specifies the current state of this database.
+      ec2InstanceId:
+        type: string
+        description: id of ec2 instance on which this rds is running
     type: object
 
   FindDBInstancesRequest:

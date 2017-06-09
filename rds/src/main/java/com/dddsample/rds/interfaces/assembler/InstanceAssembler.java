@@ -13,7 +13,8 @@ public class InstanceAssembler {
                 .engine(instance.getEngine())
                 .port(instance.getPort())
                 .availableZone(instance.getAvailableZone())
-                .status(instance.getStatus());
+                .status(instance.getStatus())
+                .ec2InstanceId(instance.getEc2InstanceId());
         return dbInstance;
     }
 

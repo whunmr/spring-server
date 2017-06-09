@@ -3,6 +3,10 @@ package com.dddsample.rds.application.ec2;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Ec2Instance {
+    public void setId(String id) {
+        this.id = id;
+    }
+
     @JsonProperty("id")
     private String id = null;
 
@@ -17,10 +21,18 @@ public class Ec2Instance {
     }
 
     public String getStatus() {
+        if (attributes == null) {
+            return null;
+        }
+
         return attributes.status;
     }
 
     public String getFlavorId() {
+        if (attributes == null) {
+            return null;
+        }
+
         return attributes.flavorId;
     }
 }
