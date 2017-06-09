@@ -10,4 +10,4 @@ EC2:
   ribbon:
     eureka:
       enabled: false
-    listOfServers: localhost:9001
+    listOfServers: localhost:9002
