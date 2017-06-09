@@ -18,7 +18,7 @@ public class InstanceAssembler {
         InstanceAttributes attributes = new InstanceAttributes();
         attributes.setFlavorId(operateInstances.getFlavorId());
         attributes.setRegionId(operateInstances.getAZ());
-        Instance.VMStatus status = operateInstances.status();
+        Instance.Status status = operateInstances.status();
         if (status != null) {
             attributes.setStatus(status.toString());
         }

@@ -2,7 +2,6 @@ package com.dddsample.ec2.domain;
 
 
 import com.dddsample.ec2.domain.instance.Instance;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -13,7 +12,6 @@ import static org.junit.Assert.assertTrue;
 /**
  * Created by azhu on 25/05/2017.
  */
-@Ignore
 public class InstanceTest {
 
 
@@ -23,7 +21,7 @@ public class InstanceTest {
         boolean isLaunched = instance.launch();
 
         assertThat(isLaunched, is(true));
-        assertThat(instance.status(), is(Instance.VMStatus.Pending));
+        assertThat(instance.status(), is(Instance.Status.Pending));
     }
 
 
@@ -41,9 +39,9 @@ public class InstanceTest {
         Instance instance = createAnInstance();
         instance.launch();
 
-        instance.moveStatusTo(Instance.VMStatus.Running);
+        instance.moveStatusTo(Instance.Status.Running);
 
-        assertThat(instance.status(), is(Instance.VMStatus.Running));
+        assertThat(instance.status(), is(Instance.Status.Running));
     }
 
 
@@ -72,10 +70,10 @@ public class InstanceTest {
         runningInstance.reboot();
         Instance rebootingInstance = runningInstance;
 
-        boolean isAutoRunning = rebootingInstance.moveStatusTo(Instance.VMStatus.Running);
+        boolean isAutoRunning = rebootingInstance.moveStatusTo(Instance.Status.Running);
 
         assertThat(isAutoRunning, is(true));
-        assertThat(rebootingInstance.status(), is(Instance.VMStatus.Running));
+        assertThat(rebootingInstance.status(), is(Instance.Status.Running));
     }
 
     @Test
@@ -85,7 +83,7 @@ public class InstanceTest {
         boolean isTerminated = runningInstance.terminate();
 
         assertThat(isTerminated, is(true));
-        assertThat(runningInstance.status(), is(Instance.VMStatus.ShuttingDown));
+        assertThat(runningInstance.status(), is(Instance.Status.ShuttingDown));
     }
 
     @Test
@@ -94,9 +92,9 @@ public class InstanceTest {
         runningInstance.terminate();
         Instance shuttingDownInstance = runningInstance;
 
-        boolean isTerminated = shuttingDownInstance.moveStatusTo(Instance.VMStatus.Terminated);
+        boolean isTerminated = shuttingDownInstance.moveStatusTo(Instance.Status.Terminated);
         assertThat(isTerminated, is(true));
-        assertThat(shuttingDownInstance.status(), is(Instance.VMStatus.Terminated));
+        assertThat(shuttingDownInstance.status(), is(Instance.Status.Terminated));
     }
 
     private Instance createAnInstance() {
@@ -106,7 +104,7 @@ public class InstanceTest {
     private Instance createRunningInstance() {
         Instance instance = createAnInstance();
         instance.launch();
-        instance.moveStatusTo(Instance.VMStatus.Running);
+        instance.moveStatusTo(Instance.Status.Running);
         return instance;
     }
 

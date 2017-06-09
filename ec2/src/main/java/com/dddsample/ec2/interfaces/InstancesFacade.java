@@ -1,7 +1,7 @@
 package com.dddsample.ec2.interfaces;
 
-import com.dddsample.ec2.domain.instance.Instance;
 import com.dddsample.ec2.application.InstanceService;
+import com.dddsample.ec2.domain.instance.Instance;
 import com.dddsample.ec2.domain.instance.InstanceRepository;
 import com.dddsample.ec2.interfaces.assembler.InstanceAssembler;
 import io.swagger.api.InstancesApiDelegate;
@@ -41,12 +41,6 @@ public class InstancesFacade implements InstancesApiDelegate {
         Instance createdInstance = instanceService.createInstance(new InstanceAssembler().fromDTO(body));
 
         return new ResponseEntity<>(new InstanceResponse().data(instanceAssembler.toDTO(createdInstance)), HttpStatus.OK);
-    }
-
-    @Override
-    public ResponseEntity<InstanceResponse> findInstance(String instanceId) {
-        Instance instance = instanceRepository.find(instanceId);
-        return new ResponseEntity<>(new InstanceResponse().data(instanceAssembler.toDTO(instance)), HttpStatus.OK);
     }
 
     @Override

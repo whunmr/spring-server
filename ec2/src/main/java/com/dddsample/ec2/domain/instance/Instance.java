@@ -21,9 +21,67 @@ public class Instance {
     private String az;
 
     @Column(name = "STATUS")
-    private VMStatus  vmStatus = VMStatus.Pending;
+    private Status status = Status.Created;
 
-    public enum VMStatus {Pending, Running, ShuttingDown, Rebooting, Terminated}
+    public enum Status {
+        Created {
+            @Override
+            public boolean moveTo(Status nextStatus) {
+                if (nextStatus == Status.Pending) {
+                    return true;
+                }
+                return false;
+            }
+        },
+        Pending {
+            @Override
+            public boolean moveTo(Status nextStatus) {
+                if (nextStatus == Status.Running) {
+                    return true;
+                }
+                return false;
+
+            }
+        },
+        Running {
+            @Override
+            public boolean moveTo(Status nextStatus) {
+                if (nextStatus == Status.Rebooting) {
+                    return true;
+                }
+                if (nextStatus == Status.ShuttingDown) {
+                    return true;
+                }
+                return false;
+            }
+        },
+        ShuttingDown {
+            @Override
+            public boolean moveTo(Status nextStatus) {
+                if (nextStatus == Status.Terminated) {
+                    return true;
+                }
+                return false;
+            }
+        },
+        Rebooting {
+            @Override
+            public boolean moveTo(Status nextStatus) {
+                if (nextStatus == Status.Running) {
+                    return true;
+                }
+                return false;
+            }
+        },
+        Terminated {
+            @Override
+            public boolean moveTo(Status nextStatus) {
+                return false;
+            }
+        };
+
+        public abstract boolean moveTo(Status nextStatus);
+    }
 
     public Instance() {
     }
@@ -32,55 +90,25 @@ public class Instance {
         this.flavorId = flavorId;
     }
 
-    public VMStatus status() {
-        return vmStatus;
+    public Status status() {
+        return status;
     }
 
     public boolean launch() {
-        if (vmStatus == null) {
-            vmStatus = VMStatus.Pending;
-            return true;
-        }
-        return false;
-    }
-
-    //TODO how notify resource context to retire instance physically
-    public boolean moveStatusTo(VMStatus vmStatus) {
-        if (vmStatus == VMStatus.Running) {
-            if (this.vmStatus == VMStatus.Pending) {
-                this.vmStatus = VMStatus.Running;
-                return true;
-            } else if (this.vmStatus == VMStatus.Rebooting) {
-                this.vmStatus = VMStatus.Running;
-                return true;
-            }else {
-                return false;
-            }
-        }
-
-        if (vmStatus == VMStatus.Terminated) {
-            if (this.vmStatus == VMStatus.ShuttingDown) {
-                this.vmStatus = VMStatus.Terminated;
-                return true;
-            } else {
-                return false;
-            }
-        }
-
-        return false;
+        return moveStatusTo(Status.Pending);
     }
 
     public boolean reboot() {
-        if (this.vmStatus == VMStatus.Running) {
-            vmStatus = VMStatus.Rebooting;
-            return true;
-        }
-        return false;
+        return moveStatusTo(Status.Rebooting);
     }
 
     public boolean terminate() {
-        if (vmStatus == VMStatus.Running) {
-            vmStatus = VMStatus.ShuttingDown;
+        return moveStatusTo(Status.ShuttingDown);
+    }
+
+    public boolean moveStatusTo(Status status) {
+        if (this.status.moveTo(status)) {
+            this.status = status;
             return true;
         }
         return false;
