@@ -4,6 +4,7 @@ import com.dddsample.ec2.domain.instance.Instance;
 import com.dddsample.ec2.domain.instance.InstanceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Created by azhu on 26/05/2017.
@@ -14,6 +15,7 @@ public class InstanceService {
     @Autowired
     private InstanceRepository instanceRepository;
 
+    @Transactional
     public Instance createInstance(Instance instance) {
         return instanceRepository.save(instance);
     }

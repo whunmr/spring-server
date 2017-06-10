@@ -6,7 +6,7 @@ import com.dddsample.ec2.domain.instance.InstanceRepository;
 import com.dddsample.ec2.interfaces.assembler.InstanceAssembler;
 import io.swagger.api.InstancesApiDelegate;
 import io.swagger.model.InstanceCreateRequest;
-import io.swagger.model.InstanceList;
+import io.swagger.model.InstanceListResponse;
 import io.swagger.model.InstanceResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,36 +26,36 @@ public class InstancesFacade implements InstancesApiDelegate {
 
     private InstanceAssembler instanceAssembler = new InstanceAssembler();
 
-
-    @Override
-    public ResponseEntity<InstanceList> findInstances(String region) {
-        List<Instance> allInstance = instanceRepository.findAll();
-
-        return new ResponseEntity<>(new InstanceList().data(instanceAssembler.toDTOs(allInstance)), HttpStatus.OK);
-    }
-
-
     @Override
     public ResponseEntity<InstanceResponse> createInstances(InstanceCreateRequest body) {
-
         Instance createdInstance = instanceService.createInstance(new InstanceAssembler().fromDTO(body));
 
-        return new ResponseEntity<>(new InstanceResponse().data(instanceAssembler.toDTO(createdInstance)), HttpStatus.OK);
+        return new ResponseEntity<>(instanceAssembler.toDTO(createdInstance), HttpStatus.CREATED);
+
+    }
+
+    @Override
+    public ResponseEntity<InstanceResponse> findInstance(String instanceId) {
+        return ResponseEntity.ok(instanceAssembler.toDTO(instanceRepository.find(instanceId)));
+    }
+
+    @Override
+    public ResponseEntity<InstanceListResponse> findInstances(String flavor) {
+        //TODO: implement find by paramenters, not findAll
+        List<Instance> instanceList = instanceRepository.findAll();
+        return ResponseEntity.ok(instanceAssembler.toDTO(instanceList));
     }
 
     @Override
     public ResponseEntity<InstanceResponse> operateInstance(String instanceId, String action) {
-        Instance instance1 = instanceRepository.find(instanceId);
+                Instance instance1 = instanceRepository.find(instanceId);
         Instance executedInstance = InstanceOperation.valueOf(action).execute(instanceService, instance1);
 
-        io.swagger.model.Instance instance = instanceAssembler.toDTO(executedInstance);
-
-        return new ResponseEntity<>(new InstanceResponse().data(instance), HttpStatus.OK);
+        return ResponseEntity.ok(instanceAssembler.toDTO(executedInstance));
     }
 
     private enum InstanceOperation {
 
-        //TODO to delete it, since it won't open to end user
         Launch {
             @Override
             public Instance execute(InstanceService instanceService, Instance instance) {

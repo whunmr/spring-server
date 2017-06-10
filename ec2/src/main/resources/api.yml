@@ -1,5 +1,5 @@
-# this is an example of the Uber API
-# as a demonstration of an API spec in YAML
+# this is an practise example with EC2 API
+# The Swagger specification link http://swagger.io/specification/ and the DOM of Swagger http://openapi-specification-visual-documentation.apihandyman.io/
 swagger: '2.0'
 info:
   version: 1.0.0
@@ -15,15 +15,32 @@ schemes:
   - "http"
   - "https"
 
+consumes:
+  - application/json
 produces:
   - application/json
 
 tags:
-  - name: instance
+  - name: Instance
     description: "API about EC2 Instance"
-  - name: region
-    description: "API about region of EC2 Instance"
+  - name: Flavor
+    description: "API about flavor for EC2 Instance"
 
+responses:
+  BadRequest400:
+    description: Bad Request
+    schema:
+      $ref: '#/definitions/failure'
+  Unauthorized401:
+    description: Unauthorized
+  ServerError500:
+    description: Unexpected error
+    headers:
+      Content-Type:
+        type: string
+        description: the response media type
+    schema:
+      $ref: '#/definitions/failure'
 paths:
   /instances:
     get:
@@ -32,20 +49,16 @@ paths:
       tags:
         - Instance
       parameters:
-        - name: region
+        - name: flavor
           in: query
-          description: 区域
+          description: Flavor ID
           type: string
           required: false
       responses:
         200:
           description: OK
-          headers:
-            Content-Type:
-              type: string
-              description: the response media type
           schema:
-            $ref: '#/definitions/InstanceList'
+            $ref: '#/definitions/InstanceListResponse'
         401:
           description: Unauthorized
           headers:
@@ -79,32 +92,14 @@ paths:
           schema:
             $ref: '#/definitions/InstanceCreateRequest'
       responses:
-        202:
-          description: Accepted
-          headers:
-            Content-Type:
-              type: string
-              description: the response media type
-            Content-Location:
-              type: string
-              description: the uri of querying result
+        201:
+          description: Created
           schema:
             $ref: '#/definitions/InstanceResponse'
-
         400:
-          description: Bad Request
-          headers:
-            Content-Type:
-              type: string
-              description: the response media type
-          schema:
-            $ref: '#/definitions/failure'
+          $ref: '#/responses/BadRequest400'
         401:
-          description: Unauthorized
-          headers:
-            Content-Type:
-              type: string
-              description: the response media type
+          $ref: '#/responses/Unauthorized401'
         403:
           description: Forbidden
           headers:
@@ -124,6 +119,37 @@ paths:
               type: string
               description: the response media type
         500:
+          $ref: '#/responses/ServerError500'
+  /instances/{instanceId}:
+    get:
+      summary: 获取实例基本信息
+      operationId: findInstance
+      tags:
+        - Instance
+      parameters:
+        - name: instanceId
+          type: string
+          in: path
+          description: 实例唯一标识
+          required: true
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/InstanceResponse'
+        401:
+          description: Unauthorized
+          headers:
+            Content-Type:
+              type: string
+              description: the response media type
+        406:
+          description: Not Acceptable
+          headers:
+            Content-Type:
+              type: string
+              description: the response media type
+        500:
           description: Unexpected error
           headers:
             Content-Type:
@@ -131,47 +157,6 @@ paths:
               description: the response media type
           schema:
             $ref: '#/definitions/failure'
-  /instances/{instanceId}:
-    get:
-          summary: 获取实例基本信息
-          operationId: findInstance
-          tags:
-            - Instance
-          parameters:
-            - name: instanceId
-              type: string
-              in: path
-              description: 实例唯一标识
-              required: true
-          responses:
-            200:
-              description: OK
-              headers:
-                Content-Type:
-                  type: string
-                  description: the response media type
-              schema:
-                $ref: '#/definitions/InstanceResponse'
-            401:
-              description: Unauthorized
-              headers:
-                Content-Type:
-                  type: string
-                  description: the response media type
-            406:
-              description: Not Acceptable
-              headers:
-                Content-Type:
-                  type: string
-                  description: the response media type
-            500:
-              description: Unexpected error
-              headers:
-                Content-Type:
-                  type: string
-                  description: the response media type
-              schema:
-                $ref: '#/definitions/failure'
   /instances/{instanceId}/action:
     put:
       summary: 对实例进行操作
@@ -188,6 +173,10 @@ paths:
           type: string
           in: query
           description: 对实例的操作，如start
+          enum:
+            - Launch
+            - Reboot
+            - Terminate
       responses:
         200:
           description: OK
@@ -198,6 +187,47 @@ paths:
           schema:
             $ref: '#/definitions/InstanceResponse'
   /flavors:
+    get:
+      summary: 查找Flavor信息
+      operationId: findFlavors
+      tags:
+        - Flavor
+      parameters:
+        - name: vCPU
+          in: query
+          description: vCPU count
+          type: integer
+          required: false
+        - name: memInGiB
+          in: query
+          description: The memory size in GiB unit
+          type: number
+          required: false
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/FlavorListResponse'
+        401:
+          description: Unauthorized
+          headers:
+            Content-Type:
+              type: string
+              description: the response media type
+        406:
+          description: Not Acceptable
+          headers:
+            Content-Type:
+              type: string
+              description: the response media type
+        500:
+              description: Unexpected error
+              headers:
+                Content-Type:
+                  type: string
+                  description: the response media type
+              schema:
+                $ref: '#/definitions/failure'
     post:
       summary: 新建Flavor
       operationId: createFlavors
@@ -211,8 +241,8 @@ paths:
           schema:
             $ref: '#/definitions/FlavorCreateRequest'
       responses:
-        202:
-          description: Accepted
+        201:
+          description: Created
           headers:
             Content-Type:
               type: string
@@ -268,7 +298,7 @@ paths:
       summary: 查找Flavor基本信息
       operationId: findFlavor
       tags:
-        - Instance
+        - Flavor
       parameters:
         - name: flavorId
           in: path
@@ -305,95 +335,52 @@ paths:
           schema:
             $ref: '#/definitions/failure'
 definitions:
+  InstanceListResponse:
+    type: array
+    items:
+      $ref: '#/definitions/InstanceResponse'
   InstanceCreateRequest:
     type: object
     properties:
-      data:
-        type: object
-        required:
-          - type
-          - id
-        properties:
-          type:
-            type: string
-          id:
-            type: string
-          attributes:
-            type: object
-            required:
-              - name
-              - plan
-            properties:
-              name:
-                type: string
-              plan:
-                type: object
-                properties:
-                  alias:
-                    type: string
-                  flavor_id:
-                    type: string
-                  image_id:
-                    type: string
-                  az:
-                    type: string
-  instance:
+      flavor_id:
+        type: string
+      az:
+        type: string
+  InstanceResponse:
     type: object
     required:
-      - id
-      - type
+      - instance_id
     properties:
-      id:
+      instance_id:
         type: string
-      type:
+      az:
         type: string
-      attributes:
-        type: object
-        properties:
-          name:
-            type: string
-          alias:
-            type: string
-          image_id:
-            type: string
-          region_id:
-            type: string
-          status:
-            type: string
-          flavor_id:
-            type: string
-      links:
-        $ref: '#/definitions/links'
-  InstanceCreationJob:
+      flavor_id:
+        type: string
+      status:
+        type: string
+  FlavorListResponse:
+      type: array
+      items:
+        $ref: '#/definitions/FlavorResponse'
+  FlavorCreateRequest:
     type: object
-    required:
-      - id
-      - type
     properties:
-      id:
+      flavorId:
         type: string
-      type:
+      vCPU:
+        type: integer
+      memInGiB:
+        type: number
+  FlavorResponse:
+    type: object
+    properties:
+      flavorId:
         type: string
-      attributes:
-        type: object
-        properties:
-          result:
-            type: string
-          result_code:
-            type: integer
-          result_description:
-            type: string
-          results:
-            type: array
-            items:
-              type: object
-              properties:
-                job_id:
-                  type: string
-                instance_id:
-                  type: string
-      links:
-        $ref: '#/definitions/links'
+      vCPU:
+        type: integer
+      memInGiB:
+        type: number
   failure:
     type: object
     properties:
@@ -441,44 +428,3 @@ definitions:
         type: string
       related:
         type: string
-  InstanceList:
-    type: object
-    properties:
-      data:
-        type: array
-        items:
-          $ref: '#/definitions/instance'
-  InstanceCreationResponse:
-    type: object
-    properties:
-      data:
-        $ref: '#/definitions/InstanceCreationJob'
-  InstanceResponse:
-    type: object
-    properties:
-      data:
-        $ref: '#/definitions/instance'
-  FlavorCreateRequest:
-    type: object
-    properties:
-        data:
-          type: object
-          properties:
-            flavorId:
-              type: string
-            vCPU:
-              type: integer
-            memInGiB:
-              type: number
-  FlavorResponse:
-    type: object
-    properties:
-        data:
-          type: object
-          properties:
-            flavorId:
-              type: string
-            vCPU:
-              type: integer
-            memInGiB:
-              type: number

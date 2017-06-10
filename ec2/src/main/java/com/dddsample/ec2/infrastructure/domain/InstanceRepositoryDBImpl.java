@@ -23,7 +23,6 @@ public class InstanceRepositoryDBImpl extends SimpleJpaRepository<Instance, Stri
     }
 
     @Override
-    @Transactional
     public Instance save(Instance instance) {
         if (StringUtils.isEmpty(instance.getInstanceId())) {
             instance.setInstanceId(UUID.randomUUID().toString());

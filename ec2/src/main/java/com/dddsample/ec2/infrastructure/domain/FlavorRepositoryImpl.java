@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
+import java.util.List;
 
 /**
  * Created by azhu on 29/05/2017.
@@ -26,5 +27,11 @@ public class FlavorRepositoryImpl extends SimpleJpaRepository<Flavor, String> im
     @Override
     public Flavor save(Flavor flavor) {
         return super.save(flavor);
+    }
+
+
+    @Override
+    public List<Flavor> findAll() {
+        return super.findAll();
     }
 }
